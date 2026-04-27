@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plano de Treino Semanal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: clamp(20px, 5vw, 40px) 20px;
+      text-align: center;
+      border-bottom: 3px solid #ff6b35;
+    }
+    header h1 {
+      font-size: clamp(1.4rem, 5vw, 2.4rem);
+      color: #ff6b35;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    header p { color: #aaa; font-size: clamp(0.78rem, 2.5vw, 0.95rem); }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 14px; }
+
+    .day-section {
+      --accent: #e74c3c;
+      margin-bottom: 28px;
+      background: #1a1a1a;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+    }
+    .day-section.back   { --accent: #3498db; }
+    .day-section.legs   { --accent: #9b59b6; }
+    .day-section.cardio { --accent: #2ecc71; }
+
+    .day-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent);
+    }
+    .day-header .emoji { font-size: 1.6rem; flex-shrink: 0; }
+    .day-header h2 {
+      font-size: clamp(0.95rem, 3vw, 1.15rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .day-focus { font-size: clamp(0.72rem, 2vw, 0.82rem); color: #999; margin-top: 3px; }
+
+    .exercises-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+    @media (max-width: 420px) {
+      .exercises-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+    }
+
+    .ex-card {
+      background: #222;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ex-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.55);
+    }
+
+    .ex-gif {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #111;
+      overflow: hidden;
+      position: relative;
+    }
+    .ex-gif img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .ex-gif .fallback {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #111;
+      padding: 8px;
+    }
+    .ex-gif .fallback .fb-icon { font-size: 2rem; }
+    .ex-gif .fallback span { font-size: 0.65rem; color: #888; text-align: center; }
+
+    .ex-info {
+      padding: 10px 10px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ex-name {
+      font-size: clamp(0.75rem, 2vw, 0.84rem);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .ex-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #2a2a2a;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 0.71rem;
+      font-weight: 700;
+      color: var(--accent, #ff6b35);
+      align-self: flex-start;
+    }
+    .changed-badge {
+      display: inline-block;
+      background: color-mix(in srgb, var(--accent) 20%, transparent);
+      color: var(--accent, #ff6b35);
+      font-size: 0.63rem;
+      padding: 2px 7px;
+      border-radius: 8px;
+      align-self: flex-start;
+      font-weight: 600;
+    }
+
+    .cardio-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .cardio-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #222;
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .cardio-item .ci-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .cardio-item .ci-label { font-size: clamp(0.88rem, 2.5vw, 1rem); font-weight: 600; }
+    .cardio-item .ci-sub { font-size: clamp(0.72rem, 2vw, 0.8rem); color: #888; margin-top: 3px; }
+    .cardio-item .ci-dur {
+      margin-left: auto;
+      background: #1a1a1a;
+      color: var(--accent);
+      padding: 5px 13px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      white-space: nowrap;
+    }
+
+    .tip {
+      margin: 0 16px 16px;
+      background: #1f1f1f;
+      border-left: 3px solid #ffd43b;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: clamp(0.75rem, 2vw, 0.83rem);
+      color: #bbb;
+      line-height: 1.5;
+    }
+    .tip strong { color: #ffd43b; }
+
+    footer {
+      text-align: center;
+      padding: 22px 16px 30px;
+      color: #555;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      line-height: 1.8;
+    }
+    footer strong { color: #888; }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .day-section { background: #f5f5f5; box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>💪 Plano de Treino Semanal</h1>
+  <p>GIFs animados de cada exercício — vê como se faz!</p>
+</header>
+
+<main>
+
+  <!-- SEGUNDA -->
+  <div class="day-section cardio">
+    <div class="day-header">
+      <span class="emoji">🏃</span>
+      <div><h2>Segunda-feira</h2><div class="day-focus">Cardio</div></div>
+    </div>
+    <div class="cardio-body">
+      <div class="cardio-item">
+        <span class="ci-icon">🏃</span>
+        <div><div class="ci-label">Esteira</div><div class="ci-sub">Ritmo moderado constante</div></div>
+        <div class="ci-dur">45 min</div>
+      </div>
+      <div class="cardio-item">
+        <span class="ci-icon">⚡</span>
+        <div><div class="ci-label">Intervalos (opcional)</div><div class="ci-sub">2 min rápido / 3 min moderado</div></div>
+        <div class="ci-dur">opcional</div>
+      </div>
+    </div>
+    <div class="tip"><strong>💡 Dica:</strong> Mantém inclinação 1–2% para simular terreno real.</div>
+  </div>
+
+  <!-- TERÇA -->
+  <div class="day-section">
+    <div class="day-header">
+      <span class="emoji">🏋️</span>
+      <div><h2>Terça-feira</h2><div class="day-focus">Peito · Tríceps · Abdómen</div></div>
+    </div>
+    <div class="exercises-grid">
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/supino.gif" alt="Supino" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🏋️</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Supino</div>
+          <div class="ex-badge">3 × 10-12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/crucifixo.gif" alt="Crucifixo máquina" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Crucifixo máquina</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/triceps-polia.gif" alt="Tríceps na polia" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Tríceps na polia</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/triceps-frances.gif" alt="Tríceps Francês" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Tríceps Francês</div>
+          <div class="ex-badge">3 × 10</div>
+          <div class="changed-badge">✦ substituído</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/prancha.gif" alt="Prancha" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Prancha</div>
+          <div class="ex-badge">3 × 30-60s</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/abdominal.gif" alt="Abdominal" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Abdominal</div>
+          <div class="ex-badge">3 × 15</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="tip"><strong>💡 Tríceps Francês</strong> — mais seguro para os ombros e isola melhor o tríceps.</div>
+  </div>
+
+  <!-- QUARTA -->
+  <div class="day-section back">
+    <div class="day-header">
+      <span class="emoji">🔙</span>
+      <div><h2>Quarta-feira</h2><div class="day-focus">Costas · Bíceps · Abdómen</div></div>
+    </div>
+    <div class="exercises-grid">
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/puxada.gif" alt="Puxada na frente" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Puxada na frente</div>
+          <div class="ex-badge">3 × 10-12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/remada.gif" alt="Remada máquina" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Remada máquina</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/biceps-halteres.gif" alt="Bíceps halteres" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Bíceps halteres</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/biceps-barra.gif" alt="Bíceps barra" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Bíceps barra</div>
+          <div class="ex-badge">3 × 10</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/elevacao-pernas.gif" alt="Elevação de pernas" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Elevação de pernas</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/prancha-lateral.gif" alt="Prancha lateral" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Prancha lateral</div>
+          <div class="ex-badge">3 × 30s cada</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUINTA -->
+  <div class="day-section legs">
+    <div class="day-header">
+      <span class="emoji">🦵</span>
+      <div><h2>Quinta-feira</h2><div class="day-focus">Pernas · Ombro</div></div>
+    </div>
+    <div class="exercises-grid">
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/goblet-squat.gif" alt="Agachamento Goblet" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Agachamento Goblet</div>
+          <div class="ex-badge">3 × 10-12</div>
+          <div class="changed-badge">✦ substituído</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/leg-press.gif" alt="Leg press" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Leg press</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/extensao-pernas.gif" alt="Extensão de pernas" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Extensão de pernas</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/elevacao-lateral.gif" alt="Elevação lateral" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Elevação lateral</div>
+          <div class="ex-badge">3 × 12</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-gif">
+          <img src="gifs/desenvolvimento-ombro.gif" alt="Desenvolvimento ombro" onerror="showFallback(this)"/>
+          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
+        </div>
+        <div class="ex-info">
+          <div class="ex-name">Desenvolvimento ombro</div>
+          <div class="ex-badge">3 × 10</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="tip"><strong>💡 Agachamento Goblet</strong> — mantém o tronco erecto e é mais seguro para os joelhos.</div>
+  </div>
+
+  <!-- SEXTA -->
+  <div class="day-section cardio">
+    <div class="day-header">
+      <span class="emoji">🏃</span>
+      <div><h2>Sexta-feira</h2><div class="day-focus">Cardio</div></div>
+    </div>
+    <div class="cardio-body">
+      <div class="cardio-item">
+        <span class="ci-icon">🏃</span>
+        <div><div class="ci-label">Esteira</div><div class="ci-sub">Pode variar a intensidade</div></div>
+        <div class="ci-dur">45 min</div>
+      </div>
+      <div class="cardio-item">
+        <span class="ci-icon">🚴</span>
+        <div><div class="ci-label">Alternativa (opcional)</div><div class="ci-sub">Bicicleta ou elíptica</div></div>
+        <div class="ci-dur">variável</div>
+      </div>
+    </div>
+    <div class="tip"><strong>💡 Dica:</strong> Cardio leve na sexta ajuda na recuperação activa dos músculos.</div>
+  </div>
+
+</main>
+
+<footer>
+  <p>💪 Consistência é a chave. Bons treinos!</p>
+  <p>🖨️ Para guardar como PDF: <strong>Ctrl+P → Guardar como PDF</strong></p>
+</footer>
+
+<script>
+  function showFallback(img) {
+    img.style.display = 'none';
+    const fb = img.parentElement.querySelector('.fallback');
+    if (fb) fb.style.display = 'flex';
+  }
+</script>
+
+</body>
+</html>
