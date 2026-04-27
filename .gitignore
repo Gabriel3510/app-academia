@@ -21,6 +21,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Local build toolchains (machine-specific)
+.android-sdk/
+.toolchain/
+
 # Logs and temp files
 *.log
 *.tmp

@@ -1,96 +1,95 @@
-# Workout Plan App
+# App Academia V1
 
-Responsive HTML workout plan with animated exercise GIFs.
+Aplicativo de treino feito em HTML/CSS/JS com suporte a Android (APK) usando Capacitor.
 
-## Run In Browser
+## Funcionalidades
 
-Open `index.html` directly in your browser.
+- Plano semanal de treino
+- Marcação de progresso por dia e por exercício
+- Troca de exercícios por variações equivalentes
+- Tema claro/escuro
+- Suporte a GIFs dos exercícios
 
-## Build Android APK (Capacitor)
-
-This project is configured to generate an Android app using Capacitor.
-
-### Requirements
-
-- Node.js 18+
-- Java 17 (recommended for recent Android toolchains)
-- Android Studio with Android SDK installed
-
-### Setup
-
-```bash
-npm install
-```
-
-### Sync Web Files to Android
-
-```bash
-npm run cap:sync
-```
-
-### Open in Android Studio
-
-```bash
-npm run cap:open
-```
-
-Then in Android Studio:
-
-1. Wait for Gradle sync
-2. Select build variant `debug` (or `release`)
-3. Build APK via `Build > Build Bundle(s) / APK(s) > Build APK(s)`
-
-### Build Debug APK from Terminal
-
-```bash
-npm run apk:debug
-```
-
-Debug APK output usually appears at:
-
-`android/app/build/outputs/apk/debug/app-debug.apk`
-
-## Project Structure
-
-```text
-app-academia/
-|-- index.html
-|-- baixar_gifs.py
-|-- README.md
-`-- gifs/
-    |-- supino.gif
-    |-- crucifixo.gif
-    `-- ...
-```
-
-## How To Use
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/Gabriel3510/app-academia.git
-cd app-academia
-```
-
-2. Download GIFs automatically
+## Executar no Navegador
 
 ```bash
 python3 baixar_gifs.py
 ```
 
-3. Open the app
+Depois abra `index.html` no navegador.
 
-Open `index.html` directly in your browser.
+## Gerar APK (Debug)
 
-## Included Weekly Split
+### Requisitos
 
-- Monday: Cardio
-- Tuesday: Chest, Triceps, Abs
-- Wednesday: Back, Biceps, Abs
-- Thursday: Legs, Shoulders
-- Friday: Cardio
+- Node.js 18+
+- Java 17 com `javac`
+- Android SDK configurado
 
-## GIF Source Note
+### Comandos principais
 
-GIF files are not included in the repository due to copyright considerations.
-Run `baixar_gifs.py` to fetch them automatically.
+```bash
+npm install
+npm run apk:debug
+```
+
+APK gerado em:
+
+`android/app/build/outputs/apk/debug/app-debug.apk`
+
+## Colocar o APK no commit (recomendado)
+
+Para versionar o APK no Git sem depender da pasta de build do Android:
+
+```bash
+npm run apk:commit
+```
+
+Isso gera/copia para:
+
+`release/App-Academia-V1-debug.apk`
+
+Essa pasta `release/` e esse APK podem ser commitados normalmente.
+
+## Fluxo de atualização (passo a passo)
+
+1. Altere o app (`index.html`, lógica, estilos etc.)
+2. Atualize GIFs se necessário:
+
+```bash
+python3 baixar_gifs.py
+```
+
+3. Gere APK atualizado:
+
+```bash
+npm run apk:commit
+```
+
+4. Commit:
+
+```bash
+git add .
+git commit -m "Atualiza app e APK"
+git push
+```
+
+## Estrutura do projeto
+
+```text
+app-academia/
+|-- index.html
+|-- baixar_gifs.py
+|-- capacitor.config.json
+|-- package.json
+|-- android/
+|-- gifs/
+`-- release/
+    `-- App-Academia-V1-debug.apk
+```
+
+## Observações importantes
+
+- A pasta `android/app/build` continua ignorada no Git (correto).
+- O APK para commit fica em `release/`, não na pasta de build.
+- Para distribuição em loja (Play Store), o ideal é gerar `release` assinado.
