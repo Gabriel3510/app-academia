@@ -12,8 +12,9 @@ import time
 os.makedirs('gifs', exist_ok=True)
 
 BASE = 'https://fitnessprogramer.com/wp-content/uploads'
+WTG  = 'https://weighttraining.guide/wp-content/uploads'
 
-MESES = [
+MESES_FP = [
     '2021/02','2021/06','2021/04','2021/01','2021/03','2021/05',
     '2021/07','2021/08','2021/09','2021/10','2021/11','2021/12',
     '2022/01','2022/02','2022/03','2022/04','2022/05','2022/06',
@@ -24,76 +25,66 @@ MESES = [
     '2024/07','2024/08','2024/09','2024/10','2024/11','2024/12',
 ]
 
-def urls_para(slugs):
-    result = []
-    for slug in slugs:
-        for mes in MESES:
-            result.append(f'{BASE}/{mes}/{slug}')
-    return result
+MESES_WTG = [
+    '2016/10','2016/11','2016/12',
+    '2017/01','2017/02','2017/03','2017/04','2017/05','2017/06',
+    '2017/07','2017/08','2017/09','2017/10','2017/11','2017/12',
+    '2018/01','2018/02','2018/03','2018/04','2018/05','2018/06',
+    '2018/07','2018/08','2018/09','2018/10','2018/11','2018/12',
+    '2019/01','2019/02','2019/03','2019/04',
+]
+
+def urls_fp(slugs):
+    return [f'{BASE}/{m}/{s}' for s in slugs for m in MESES_FP]
+
+def urls_wtg(slugs):
+    return [f'{WTG}/{m}/{s}' for s in slugs for m in MESES_WTG]
 
 gifs = [
-    ('supino.gif',               urls_para(['Barbell-Bench-Press.gif','Bench-Press.gif'])),
-    ('crucifixo.gif',            urls_para(['Pec-Deck-Fly.gif','Cable-Crossover.gif','Chest-Fly.gif','Machine-Fly.gif'])),
-    ('triceps-polia.gif',        urls_para(['Pushdown.gif','Triceps-Pushdown.gif','Cable-Pushdown.gif','Rope-Pushdown.gif'])),
-    ('triceps-frances.gif',      urls_para(['Dumbbell-Lying-Triceps-Extension.gif','Lying-Triceps-Extension.gif','EZ-Bar-Lying-Triceps-Extension.gif','Skull-Crusher.gif','Triceps-Extension.gif','French-Press.gif'])),
-    ('prancha.gif',              urls_para([
-        'Plank.gif',
-        'Front-Plank.gif',
-        'Forearm-Plank.gif',
-        'Elbow-Plank.gif',
-        'Abdominal-Plank.gif',
-        'Prone-Plank.gif',
-        'Straight-Arm-Plank.gif',
-        'High-Plank.gif',
-        'Low-Plank.gif',
-        'Core-Plank.gif',
-        'Push-Up-Position-Plank.gif',
-        'Plank-Hold.gif',
-        'Static-Plank.gif',
-        'Isometric-Plank.gif',
-    ])),
-    ('abdominal.gif',            urls_para(['Crunch.gif','Abdominal-Crunch.gif','Basic-Crunch.gif','Floor-Crunch.gif','Sit-Up.gif'])),
-    ('puxada.gif',               urls_para(['Lat-Pulldown.gif','Cable-Lat-Pulldown.gif','Front-Lat-Pulldown.gif'])),
-    ('remada.gif',               urls_para(['Seated-Cable-Rows.gif','Cable-Seated-Row.gif','Seated-Row.gif','Low-Row.gif','Machine-Row.gif'])),
-    ('biceps-halteres.gif',      urls_para(['Dumbbell-Bicep-Curl.gif','Dumbbell-Curl.gif','Alternating-Dumbbell-Curl.gif'])),
-    ('biceps-barra.gif',         urls_para(['Barbell-Curl.gif','Barbell-Bicep-Curl.gif'])),
-    ('elevacao-pernas.gif',      urls_para(['Hanging-Leg-Hip-Raise.gif','Hanging-Leg-Raise.gif','Lying-Leg-Raise.gif','Leg-Raise.gif'])),
-    ('prancha-lateral.gif',      urls_para(['Side-Plank.gif','Lateral-Plank.gif','Side-Bridge.gif','Side-Forearm-Plank.gif'])),
-    ('goblet-squat.gif',         urls_para(['Goblet-Squat.gif','Dumbbell-Goblet-Squat.gif','Kettlebell-Goblet-Squat.gif'])),
-    ('leg-press.gif',            urls_para([
-        'Leg-Press.gif',
-        '45-Degree-Leg-Press.gif',
-        'Horizontal-Leg-Press.gif',
-        'Machine-Leg-Press.gif',
-        'Sled-Leg-Press.gif',
-        'Seated-Leg-Press.gif',
-        'Incline-Leg-Press.gif',
-        'Hack-Squat-Machine.gif',
-        'Leg-Press-Machine.gif',
-        'Linear-Leg-Press.gif',
-        'Plate-Loaded-Leg-Press.gif',
-        'Vertical-Leg-Press.gif',
-    ])),
-    ('extensao-pernas.gif',      urls_para([
-        'Leg-Extension.gif',
-        'Knee-Extension.gif',
-        'Machine-Leg-Extension.gif',
-        'Seated-Leg-Extension.gif',
-        'Leg-Extensor.gif',
-        'Quadriceps-Extension.gif',
-        'Seated-Knee-Extension.gif',
-        'Leg-Extension-Machine.gif',
-        'Machine-Knee-Extension.gif',
-        'Lever-Leg-Extension.gif',
-        'Lever-Knee-Extension.gif',
-    ])),
-    ('elevacao-lateral.gif',     urls_para(['Dumbbell-Lateral-Raise.gif','Lateral-Raise.gif','Side-Lateral-Raise.gif'])),
-    ('desenvolvimento-ombro.gif',urls_para(['Dumbbell-Shoulder-Press.gif','Shoulder-Press.gif','Dumbbell-Military-Press.gif'])),
+    ('supino.gif',               urls_fp(['Barbell-Bench-Press.gif','Bench-Press.gif'])),
+    ('crucifixo.gif',            urls_fp(['Pec-Deck-Fly.gif','Cable-Crossover.gif','Chest-Fly.gif'])),
+    ('triceps-polia.gif',        urls_fp(['Pushdown.gif','Triceps-Pushdown.gif','Cable-Pushdown.gif'])),
+    ('triceps-frances.gif',      urls_fp(['Dumbbell-Lying-Triceps-Extension.gif','Lying-Triceps-Extension.gif','Skull-Crusher.gif'])),
+    ('prancha.gif',              urls_fp(['Plank.gif','Front-Plank.gif','Forearm-Plank.gif','High-Plank.gif','Prone-Plank.gif'])),
+    ('abdominal.gif',            urls_fp(['Crunch.gif','Abdominal-Crunch.gif','Basic-Crunch.gif','Sit-Up.gif'])),
+    ('puxada.gif',               urls_fp(['Lat-Pulldown.gif','Cable-Lat-Pulldown.gif','Front-Lat-Pulldown.gif'])),
+    ('remada.gif',               urls_fp(['Seated-Cable-Rows.gif','Cable-Seated-Row.gif','Seated-Row.gif'])),
+    ('biceps-halteres.gif',      urls_fp(['Dumbbell-Bicep-Curl.gif','Dumbbell-Curl.gif','Alternating-Dumbbell-Curl.gif'])),
+    ('biceps-barra.gif',         urls_fp(['Barbell-Curl.gif','Barbell-Bicep-Curl.gif'])),
+    ('elevacao-pernas.gif',      urls_fp(['Hanging-Leg-Hip-Raise.gif','Hanging-Leg-Raise.gif','Lying-Leg-Raise.gif'])),
+    ('prancha-lateral.gif',      urls_fp(['Side-Plank.gif','Lateral-Plank.gif','Side-Bridge.gif'])),
+    ('goblet-squat.gif',         urls_fp(['Goblet-Squat.gif','Dumbbell-Goblet-Squat.gif'])),
+
+    # leg-press e extensao-pernas: tenta fitnessprogramer + weighttraining.guide
+    ('leg-press.gif',
+        urls_fp([
+            'Leg-Press.gif','45-Degree-Leg-Press.gif','Horizontal-Leg-Press.gif',
+            'Machine-Leg-Press.gif','Sled-Leg-Press.gif','Seated-Leg-Press.gif',
+            'Incline-Leg-Press.gif','Leg-Press-Machine.gif','Vertical-Leg-Press.gif',
+        ]) +
+        urls_wtg([
+            'leg-press.gif','45-degree-leg-press.gif','leg-press-1.gif',
+            'horizontal-leg-press.gif','seated-leg-press.gif',
+        ])
+    ),
+    ('extensao-pernas.gif',
+        urls_fp([
+            'Leg-Extension.gif','Knee-Extension.gif','Machine-Leg-Extension.gif',
+            'Seated-Leg-Extension.gif','Leg-Extensor.gif','Quadriceps-Extension.gif',
+            'Lever-Leg-Extension.gif','Lever-Knee-Extension.gif','Leg-Extension-Machine.gif',
+        ]) +
+        urls_wtg([
+            'leg-extension.gif','leg-extension-1.gif','knee-extension.gif',
+            'seated-leg-extension.gif','machine-leg-extension.gif',
+        ])
+    ),
+
+    ('elevacao-lateral.gif',     urls_fp(['Dumbbell-Lateral-Raise.gif','Lateral-Raise.gif'])),
+    ('desenvolvimento-ombro.gif',urls_fp(['Dumbbell-Shoulder-Press.gif','Shoulder-Press.gif'])),
 ]
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Referer': 'https://fitnessprogramer.com/',
     'Accept': 'image/gif,image/*,*/*',
 }
 
@@ -101,7 +92,12 @@ def tentar_download(urls):
     ultimo_erro = None
     for url in urls:
         try:
-            req = urllib.request.Request(url, headers=headers)
+            h = dict(headers)
+            if 'fitnessprogramer' in url:
+                h['Referer'] = 'https://fitnessprogramer.com/'
+            elif 'weighttraining' in url:
+                h['Referer'] = 'https://weighttraining.guide/'
+            req = urllib.request.Request(url, headers=h)
             with urllib.request.urlopen(req, timeout=15) as resp:
                 data = resp.read()
             if len(data) > 500 and data[:3] == b'GIF':
@@ -131,28 +127,23 @@ for nome, urls in gifs:
         with open(destino, 'wb') as f:
             f.write(data)
         tamanho = len(data) // 1024
-        print(f'\r  \u2705  {nome}  ({tamanho} KB)                                    ')
+        print(f'\r  \u2705  {nome}  ({tamanho} KB)                                      ')
         ok += 1
     except Exception as e:
-        print(f'\r  \u274c  {nome}  \u2192 nao encontrado                               ')
+        print(f'\r  \u274c  {nome}  \u2192 nao encontrado                                ')
         erros_lista.append(nome)
         err += 1
 
 print(f'\n\u2714  Concluido: {ok} OK  |  {err} erros')
-
 if ok > 0:
     print('   Abre o index.html no browser \u2014 os GIFs devem aparecer! \U0001f389')
 
 if erros_lista:
-    print('\n   \u26a0\ufe0f  Nao foi possivel baixar automaticamente:')
-    for nome in erros_lista:
-        print(f'      \u2022 {nome}')
-    print('\n   Solucao manual — clica no link e guarda o GIF com o nome indicado na pasta gifs/:')
+    print('\n   \u26a0\ufe0f  Guarda manualmente na pasta gifs/ com o nome indicado:')
     links = {
-        'prancha.gif':         'https://fitnessprogramer.com/?s=plank',
         'leg-press.gif':       'https://fitnessprogramer.com/?s=leg+press',
         'extensao-pernas.gif': 'https://fitnessprogramer.com/?s=leg+extension',
     }
     for nome in erros_lista:
         link = links.get(nome, 'https://fitnessprogramer.com')
-        print(f'      \u2022 {nome} \u2192 {link}')
+        print(f'      \u2022 {nome}  \u2192  {link}')
