@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """
-Script para baixar automaticamente os GIFs dos exercicios.
-Executa na pasta raiz do projeto:
+Download all exercise GIFs automatically.
+Run from the project root:
   python3 baixar_gifs.py
 """
 
-import urllib.request
 import os
 import time
+import urllib.request
 
-os.makedirs('gifs', exist_ok=True)
+OUTPUT_DIR = "gifs"
+BASE_URL = "https://fitnessprogramer.com/wp-content/uploads"
 
+<<<<<<< HEAD
 BASE = 'https://fitnessprogramer.com/wp-content/uploads'
 WTG  = 'https://weighttraining.guide/wp-content/uploads'
 
@@ -86,12 +88,100 @@ gifs = [
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     'Accept': 'image/gif,image/*,*/*',
+=======
+MONTHS = [
+    "2021/02", "2021/06", "2021/04", "2021/01", "2021/03", "2021/05",
+    "2021/07", "2021/08", "2021/09", "2021/10", "2021/11", "2021/12",
+    "2022/01", "2022/02", "2022/03", "2022/04", "2022/05", "2022/06",
+    "2022/07", "2022/08", "2022/09", "2022/10", "2022/11", "2022/12",
+    "2023/01", "2023/02", "2023/03", "2023/04", "2023/05", "2023/06",
+    "2023/07", "2023/08", "2023/09", "2023/10", "2023/11", "2023/12",
+    "2024/01", "2024/02", "2024/03", "2024/04", "2024/05", "2024/06",
+    "2024/07", "2024/08", "2024/09", "2024/10", "2024/11", "2024/12",
+]
+
+
+def build_candidate_urls(slugs):
+    urls = []
+    for slug in slugs:
+        for month in MONTHS:
+            urls.append(f"{BASE_URL}/{month}/{slug}")
+    return urls
+
+
+GIF_SOURCES = [
+    ("supino.gif", build_candidate_urls(["Barbell-Bench-Press.gif", "Bench-Press.gif"])),
+    ("crucifixo.gif", build_candidate_urls(["Pec-Deck-Fly.gif", "Cable-Crossover.gif", "Chest-Fly.gif", "Machine-Fly.gif"])),
+    ("triceps-polia.gif", build_candidate_urls(["Pushdown.gif", "Triceps-Pushdown.gif", "Cable-Pushdown.gif", "Rope-Pushdown.gif"])),
+    ("triceps-frances.gif", build_candidate_urls(["Dumbbell-Lying-Triceps-Extension.gif", "Lying-Triceps-Extension.gif", "EZ-Bar-Lying-Triceps-Extension.gif", "Skull-Crusher.gif", "Triceps-Extension.gif", "French-Press.gif"])),
+    ("prancha.gif", build_candidate_urls([
+        "Plank.gif",
+        "Front-Plank.gif",
+        "Forearm-Plank.gif",
+        "Elbow-Plank.gif",
+        "Abdominal-Plank.gif",
+        "Prone-Plank.gif",
+        "Straight-Arm-Plank.gif",
+        "High-Plank.gif",
+        "Low-Plank.gif",
+        "Core-Plank.gif",
+        "Push-Up-Position-Plank.gif",
+        "Plank-Hold.gif",
+        "Static-Plank.gif",
+        "Isometric-Plank.gif",
+    ])),
+    ("abdominal.gif", build_candidate_urls(["Crunch.gif", "Abdominal-Crunch.gif", "Basic-Crunch.gif", "Floor-Crunch.gif", "Sit-Up.gif"])),
+    ("puxada.gif", build_candidate_urls(["Lat-Pulldown.gif", "Cable-Lat-Pulldown.gif", "Front-Lat-Pulldown.gif"])),
+    ("remada.gif", build_candidate_urls(["Seated-Cable-Rows.gif", "Cable-Seated-Row.gif", "Seated-Row.gif", "Low-Row.gif", "Machine-Row.gif"])),
+    ("biceps-halteres.gif", build_candidate_urls(["Dumbbell-Bicep-Curl.gif", "Dumbbell-Curl.gif", "Alternating-Dumbbell-Curl.gif"])),
+    ("biceps-barra.gif", build_candidate_urls(["Barbell-Curl.gif", "Barbell-Bicep-Curl.gif"])),
+    ("elevacao-pernas.gif", build_candidate_urls(["Hanging-Leg-Hip-Raise.gif", "Hanging-Leg-Raise.gif", "Lying-Leg-Raise.gif", "Leg-Raise.gif"])),
+    ("prancha-lateral.gif", build_candidate_urls(["Side-Plank.gif", "Lateral-Plank.gif", "Side-Bridge.gif", "Side-Forearm-Plank.gif"])),
+    ("goblet-squat.gif", build_candidate_urls(["Goblet-Squat.gif", "Dumbbell-Goblet-Squat.gif", "Kettlebell-Goblet-Squat.gif"])),
+    ("leg-press.gif", build_candidate_urls([
+        "Leg-Press.gif",
+        "45-Degree-Leg-Press.gif",
+        "Horizontal-Leg-Press.gif",
+        "Machine-Leg-Press.gif",
+        "Sled-Leg-Press.gif",
+        "Seated-Leg-Press.gif",
+        "Incline-Leg-Press.gif",
+        "Hack-Squat-Machine.gif",
+        "Leg-Press-Machine.gif",
+        "Linear-Leg-Press.gif",
+        "Plate-Loaded-Leg-Press.gif",
+        "Vertical-Leg-Press.gif",
+    ])),
+    ("extensao-pernas.gif", build_candidate_urls([
+        "Leg-Extension.gif",
+        "Knee-Extension.gif",
+        "Machine-Leg-Extension.gif",
+        "Seated-Leg-Extension.gif",
+        "Leg-Extensor.gif",
+        "Quadriceps-Extension.gif",
+        "Seated-Knee-Extension.gif",
+        "Leg-Extension-Machine.gif",
+        "Machine-Knee-Extension.gif",
+        "Lever-Leg-Extension.gif",
+        "Lever-Knee-Extension.gif",
+    ])),
+    ("elevacao-lateral.gif", build_candidate_urls(["Dumbbell-Lateral-Raise.gif", "Lateral-Raise.gif", "Side-Lateral-Raise.gif"])),
+    ("desenvolvimento-ombro.gif", build_candidate_urls(["Dumbbell-Shoulder-Press.gif", "Shoulder-Press.gif", "Dumbbell-Military-Press.gif"])),
+]
+
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Referer": "https://fitnessprogramer.com/",
+    "Accept": "image/gif,image/*,*/*",
+>>>>>>> 1339c68 (primeira versao do meu app de treino)
 }
 
-def tentar_download(urls):
-    ultimo_erro = None
+
+def download_from_candidates(urls):
+    last_error = None
     for url in urls:
         try:
+<<<<<<< HEAD
             h = dict(headers)
             if 'fitnessprogramer' in url:
                 h['Referer'] = 'https://fitnessprogramer.com/'
@@ -101,26 +191,29 @@ def tentar_download(urls):
             with urllib.request.urlopen(req, timeout=15) as resp:
                 data = resp.read()
             if len(data) > 500 and data[:3] == b'GIF':
+=======
+            request = urllib.request.Request(url, headers=REQUEST_HEADERS)
+            with urllib.request.urlopen(request, timeout=15) as response:
+                data = response.read()
+            if len(data) > 500 and data[:3] == b"GIF":
+>>>>>>> 1339c68 (primeira versao do meu app de treino)
                 return data, url
-        except Exception as e:
-            ultimo_erro = e
+        except Exception as error:
+            last_error = error
         time.sleep(0.1)
-    raise Exception(f'Nenhuma URL funcionou. Ultimo erro: {ultimo_erro}')
+    raise RuntimeError(f"No working URL found. Last error: {last_error}")
 
-print('\n\U0001f3cb\ufe0f  A baixar GIFs dos exercicios...\n')
 
-ok = 0
-err = 0
-erros_lista = []
+def main():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-for nome, urls in gifs:
-    destino = os.path.join('gifs', nome)
+    print("\nDownloading exercise GIFs...\n")
 
-    if os.path.exists(destino) and os.path.getsize(destino) > 1000:
-        print(f'  \u23ed\ufe0f  {nome}  (ja existe, a saltar)')
-        ok += 1
-        continue
+    downloaded = 0
+    failed = 0
+    failed_files = []
 
+<<<<<<< HEAD
     print(f'  \U0001f50d  {nome}  (a tentar {len(urls)} URLs)...', end='', flush=True)
     try:
         data, url_ok = tentar_download(urls)
@@ -147,3 +240,49 @@ if erros_lista:
     for nome in erros_lista:
         link = links.get(nome, 'https://fitnessprogramer.com')
         print(f'      \u2022 {nome}  \u2192  {link}')
+=======
+    for filename, urls in GIF_SOURCES:
+        destination = os.path.join(OUTPUT_DIR, filename)
+
+        if os.path.exists(destination) and os.path.getsize(destination) > 1000:
+            print(f"  SKIP {filename} (already exists)")
+            downloaded += 1
+            continue
+
+        print(f"  TRY  {filename} ({len(urls)} candidate URLs)...", end="", flush=True)
+        try:
+            data, working_url = download_from_candidates(urls)
+            with open(destination, "wb") as file_handle:
+                file_handle.write(data)
+            size_kb = len(data) // 1024
+            print(f"\r  OK   {filename} ({size_kb} KB) from {working_url}")
+            downloaded += 1
+        except Exception:
+            print(f"\r  FAIL {filename} (not found)")
+            failed += 1
+            failed_files.append(filename)
+
+    print(f"\nDone: {downloaded} succeeded | {failed} failed")
+
+    if downloaded > 0:
+        print("Open index.html in your browser to preview the plan.")
+
+    if failed_files:
+        print("\nCould not download these files automatically:")
+        for filename in failed_files:
+            print(f"  - {filename}")
+
+        print("\nManual fallback links:")
+        fallback_links = {
+            "prancha.gif": "https://fitnessprogramer.com/?s=plank",
+            "leg-press.gif": "https://fitnessprogramer.com/?s=leg+press",
+            "extensao-pernas.gif": "https://fitnessprogramer.com/?s=leg+extension",
+        }
+        for filename in failed_files:
+            link = fallback_links.get(filename, "https://fitnessprogramer.com")
+            print(f"  - {filename}: {link}")
+
+
+if __name__ == "__main__":
+    main()
+>>>>>>> 1339c68 (primeira versao do meu app de treino)

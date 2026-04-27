@@ -1,50 +1,52 @@
-# 💪 App Academia — Plano de Treino Semanal
+# Workout Plan App
 
-Página HTML com GIFs animados de cada exercício, responsiva para celular.
+Responsive HTML workout plan with animated exercise GIFs.
 
-## 📁 Estrutura
+## Project Structure
 
-```
+```text
 app-academia/
-├── index.html          ← Página principal
-├── baixar_gifs.py      ← Script para baixar os GIFs automaticamente
-├── README.md
-└── gifs/               ← Pasta onde os GIFs ficam guardados
-    ├── supino.gif
-    ├── crucifixo.gif
-    └── ... (17 GIFs no total)
+|-- index.html
+|-- baixar_gifs.py
+|-- README.md
+`-- gifs/
+    |-- supino.gif
+    |-- crucifixo.gif
+    `-- ...
 ```
 
-## 🚀 Como usar
+## How To Use
 
-### 1. Clona o repositório
+1. Clone the repository
+
 ```bash
 git clone https://github.com/Gabriel3510/app-academia.git
 cd app-academia
 ```
 
-### 2. Baixa os GIFs automaticamente
+2. Download GIFs automatically
+
 ```bash
-python baixar_gifs.py
+python3 baixar_gifs.py
 ```
 
-### 3. Abre no browser
-Abre o ficheiro `index.html` diretamente no Chrome ou Edge.
+3. Open the app
 
-### 4. (Opcional) Guardar como PDF
-No browser: **Ctrl+P → Guardar como PDF**
+Open `index.html` directly in your browser.
 
-## 📋 Exercícios incluídos
+4. Optional: export as PDF
 
-| Dia | Treino |
-|-----|--------|
-| Segunda | Cardio (Esteira 45min) |
-| Terça | Peito · Tríceps · Abdómen |
-| Quarta | Costas · Bíceps · Abdómen |
-| Quinta | Pernas · Ombro |
-| Sexta | Cardio (Esteira 45min) |
+Use `Ctrl+P` in the browser and save as PDF.
 
-## ⚠️ Nota sobre os GIFs
+## Included Weekly Split
 
-Os GIFs não estão incluídos no repositório por questões de direitos de autor.
-Usa o script `baixar_gifs.py` para os baixar automaticamente.
+- Monday: Cardio
+- Tuesday: Chest, Triceps, Abs
+- Wednesday: Back, Biceps, Abs
+- Thursday: Legs, Shoulders
+- Friday: Cardio
+
+## GIF Source Note
+
+GIF files are not included in the repository due to copyright considerations.
+Run `baixar_gifs.py` to fetch them automatically.

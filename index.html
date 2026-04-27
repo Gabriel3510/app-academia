@@ -1,491 +1,1032 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Plano de Treino Semanal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Plan</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-soft: #f7f9ff;
+      --text: #12131a;
+      --muted: #61657a;
+      --line: #e4e8f4;
+      --primary: #114de5;
+      --primary-strong: #0f38a9;
+      --accent: #ff7a18;
+      --glass: rgba(255, 255, 255, 0.82);
+      --modal-overlay: rgba(18, 19, 26, 0.58);
+      --card-shadow: 0 14px 40px rgba(17, 77, 229, 0.12);
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0d111d;
+      --surface: #131a2b;
+      --surface-soft: #0f1523;
+      --text: #e9ecf6;
+      --muted: #a1abc2;
+      --line: #24314f;
+      --primary: #81a5ff;
+      --primary-strong: #a8c0ff;
+      --accent: #ffab5f;
+      --glass: rgba(19, 26, 43, 0.82);
+      --modal-overlay: rgba(3, 6, 14, 0.78);
+      --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #0d0d0d;
-      color: #f0f0f0;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 5% 0%, rgba(255, 122, 24, 0.18), transparent 30%),
+        radial-gradient(circle at 95% 100%, rgba(17, 77, 229, 0.2), transparent 35%),
+        var(--bg);
       min-height: 100vh;
+      padding: 20px 14px 28px;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
-    header {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      padding: clamp(20px, 5vw, 40px) 20px;
-      text-align: center;
-      border-bottom: 3px solid #ff6b35;
-    }
-    header h1 {
-      font-size: clamp(1.4rem, 5vw, 2.4rem);
-      color: #ff6b35;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 8px;
-    }
-    header p { color: #aaa; font-size: clamp(0.78rem, 2.5vw, 0.95rem); }
-
-    main { max-width: 1100px; margin: 0 auto; padding: 20px 14px; }
-
-    .day-section {
-      --accent: #e74c3c;
-      margin-bottom: 28px;
-      background: #1a1a1a;
-      border-radius: 20px;
+    body.modal-open {
       overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.45);
     }
-    .day-section.back   { --accent: #3498db; }
-    .day-section.legs   { --accent: #9b59b6; }
-    .day-section.cardio { --accent: #2ecc71; }
 
-    .day-header {
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-left: 4px solid var(--accent);
-      background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent);
-    }
-    .day-header .emoji { font-size: 1.6rem; flex-shrink: 0; }
-    .day-header h2 {
-      font-size: clamp(0.95rem, 3vw, 1.15rem);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-    .day-focus { font-size: clamp(0.72rem, 2vw, 0.82rem); color: #999; margin-top: 3px; }
-
-    .exercises-grid {
+    .shell {
+      width: min(1140px, 100%);
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 14px;
-      padding: 16px;
-    }
-    @media (max-width: 420px) {
-      .exercises-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+      gap: 20px;
     }
 
-    .ex-card {
-      background: #222;
-      border-radius: 14px;
-      overflow: hidden;
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 10;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--glass);
+      backdrop-filter: blur(8px);
+      border: 1px solid color-mix(in srgb, var(--line) 65%, transparent);
+      box-shadow: var(--card-shadow);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+    }
+
+    .brand {
       display: flex;
       flex-direction: column;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.2s, box-shadow 0.2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .ex-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.55);
+      gap: 4px;
     }
 
-    .ex-gif {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #111;
+    .brand h1 {
+      font-size: clamp(1.15rem, 3vw, 1.8rem);
+      line-height: 1;
+      letter-spacing: 0.3px;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: clamp(0.72rem, 2vw, 0.86rem);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .segmented {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line) 45%, transparent);
+      gap: 3px;
+    }
+
+    .segment-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .segment-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .segment-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .day-card {
+      grid-column: span 12;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      box-shadow: var(--card-shadow);
       overflow: hidden;
+      animation: cardIn 450ms ease both;
+    }
+
+    .day-card[data-kind="cardio"] {
+      --tone: #15a87f;
+      --tone-soft: #ecfbf6;
+    }
+
+    .day-card[data-kind="push"] {
+      --tone: #114de5;
+      --tone-soft: #eef2ff;
+    }
+
+    .day-card[data-kind="pull"] {
+      --tone: #7b41e3;
+      --tone-soft: #f4f0ff;
+    }
+
+    .day-card[data-kind="legs"] {
+      --tone: #ea5f19;
+      --tone-soft: #fff3ec;
+    }
+
+    html[data-theme="dark"] .day-card[data-kind="cardio"] {
+      --tone: #53dcb6;
+      --tone-soft: #102b28;
+    }
+
+    html[data-theme="dark"] .day-card[data-kind="push"] {
+      --tone: #84a8ff;
+      --tone-soft: #1a2545;
+    }
+
+    html[data-theme="dark"] .day-card[data-kind="pull"] {
+      --tone: #ba98ff;
+      --tone-soft: #26193e;
+    }
+
+    html[data-theme="dark"] .day-card[data-kind="legs"] {
+      --tone: #ffae74;
+      --tone-soft: #3c2216;
+    }
+
+    .day-head {
+      border-left: 4px solid var(--tone);
+      background: linear-gradient(90deg, var(--tone-soft), color-mix(in srgb, var(--surface) 80%, transparent));
+      padding: 16px 18px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .day-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: clamp(0.95rem, 2.4vw, 1.2rem);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
+
+    .day-focus {
+      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 500;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+      gap: 12px;
+      padding: 14px;
+      background: var(--surface-soft);
+    }
+
+    .exercise {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: var(--surface);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: zoom-in;
       position: relative;
     }
-    .ex-gif img {
+
+    .exercise:hover,
+    .exercise:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(18, 19, 26, 0.16);
+      outline: none;
+    }
+
+    .expand-hint {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      background: color-mix(in srgb, var(--surface) 55%, black);
+      color: #ffffff;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      line-height: 1;
+      padding: 5px 8px;
+      z-index: 1;
+      pointer-events: none;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .exercise-media {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      background: #eef2ff;
+    }
+
+    html[data-theme="dark"] .exercise-media {
+      background: #1a2640;
+    }
+
+    .exercise-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-    .ex-gif .fallback {
+
+    .fallback {
       display: none;
       position: absolute;
       inset: 0;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      background: #111;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.74rem;
       padding: 8px;
+      background: #e8ecf8;
     }
-    .ex-gif .fallback .fb-icon { font-size: 2rem; }
-    .ex-gif .fallback span { font-size: 0.65rem; color: #888; text-align: center; }
 
-    .ex-info {
-      padding: 10px 10px 12px;
-      flex: 1;
+    html[data-theme="dark"] .fallback {
+      background: #1d2946;
+    }
+
+    .exercise-body {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      padding: 10px;
+      flex: 1;
     }
-    .ex-name {
-      font-size: clamp(0.75rem, 2vw, 0.84rem);
+
+    .exercise-name {
+      font-size: 0.82rem;
       font-weight: 600;
-      line-height: 1.3;
+      line-height: 1.35;
     }
-    .ex-badge {
+
+    .exercise-meta {
       display: inline-flex;
-      align-items: center;
-      background: #2a2a2a;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 0.71rem;
-      font-weight: 700;
-      color: var(--accent, #ff6b35);
+      border-radius: 999px;
       align-self: flex-start;
+      color: var(--tone);
+      background: color-mix(in srgb, var(--tone) 11%, white);
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
     }
-    .changed-badge {
-      display: inline-block;
-      background: color-mix(in srgb, var(--accent) 20%, transparent);
-      color: var(--accent, #ff6b35);
-      font-size: 0.63rem;
-      padding: 2px 7px;
+
+    .exercise-note {
+      display: inline-flex;
       border-radius: 8px;
       align-self: flex-start;
+      color: var(--tone);
+      border: 1px dashed color-mix(in srgb, var(--tone) 35%, white);
+      padding: 2px 7px;
+      font-size: 0.64rem;
       font-weight: 600;
     }
 
-    .cardio-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
-    .cardio-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: #222;
-      border-radius: 14px;
-      padding: 14px 16px;
+    html[data-theme="dark"] .exercise-meta {
+      color: #f0f4ff;
+      background: color-mix(in srgb, var(--tone) 24%, #0f1523);
     }
-    .cardio-item .ci-icon { font-size: 1.8rem; flex-shrink: 0; }
-    .cardio-item .ci-label { font-size: clamp(0.88rem, 2.5vw, 1rem); font-weight: 600; }
-    .cardio-item .ci-sub { font-size: clamp(0.72rem, 2vw, 0.8rem); color: #888; margin-top: 3px; }
-    .cardio-item .ci-dur {
-      margin-left: auto;
-      background: #1a1a1a;
-      color: var(--accent);
-      padding: 5px 13px;
-      border-radius: 20px;
+
+    html[data-theme="dark"] .exercise-note {
+      color: #eef3ff;
+      border-color: color-mix(in srgb, var(--tone) 54%, #0f1523);
+      background: color-mix(in srgb, var(--tone) 14%, #0f1523);
+    }
+
+    .cardio-list {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      background: var(--surface-soft);
+    }
+
+    .cardio-item {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 12px;
+      align-items: center;
+    }
+
+    .cardio-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .cardio-sub {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .duration {
+      border-radius: 999px;
+      color: var(--tone);
+      background: color-mix(in srgb, var(--tone) 12%, white);
+      padding: 6px 11px;
+      font-size: 0.75rem;
       font-weight: 700;
-      font-size: clamp(0.75rem, 2vw, 0.85rem);
       white-space: nowrap;
     }
 
+    html[data-theme="dark"] .duration {
+      color: #eff5ff;
+      background: color-mix(in srgb, var(--tone) 28%, #0f1523);
+    }
+
     .tip {
-      margin: 0 16px 16px;
-      background: #1f1f1f;
-      border-left: 3px solid #ffd43b;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: clamp(0.75rem, 2vw, 0.83rem);
-      color: #bbb;
-      line-height: 1.5;
+      margin: 0 14px 14px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid color-mix(in srgb, var(--tone) 30%, white);
+      background: color-mix(in srgb, var(--tone) 12%, white);
+      color: var(--text);
+      font-size: 0.78rem;
+      line-height: 1.45;
     }
-    .tip strong { color: #ffd43b; }
 
-    footer {
+    html[data-theme="dark"] .tip {
+      border-color: color-mix(in srgb, var(--tone) 42%, #0f1523);
+      background: color-mix(in srgb, var(--tone) 18%, #0f1523);
+      color: #eaf1ff;
+    }
+
+    .footer {
       text-align: center;
-      padding: 22px 16px 30px;
-      color: #555;
-      font-size: clamp(0.75rem, 2vw, 0.82rem);
-      line-height: 1.8;
+      color: var(--muted);
+      font-size: 0.76rem;
+      padding: 8px 6px 2px;
+      line-height: 1.7;
     }
-    footer strong { color: #888; }
 
-    @media print {
-      body { background: #fff; color: #000; }
-      .day-section { background: #f5f5f5; box-shadow: none; break-inside: avoid; }
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: var(--modal-overlay);
+      padding: 16px;
+      z-index: 30;
+    }
+
+    .preview-modal.open {
+      display: flex;
+    }
+
+    .preview-card {
+      width: min(860px, 100%);
+      max-height: min(90vh, 860px);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .preview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .preview-title {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .preview-title strong {
+      font-size: 0.96rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-title span {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .close-btn {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .preview-media {
+      background: color-mix(in srgb, var(--surface-soft) 74%, black);
+      display: grid;
+      place-items: center;
+      min-height: 260px;
+    }
+
+    .preview-media img {
+      max-width: 100%;
+      max-height: 72vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .preview-foot {
+      padding: 10px 14px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (min-width: 920px) {
+      .day-card[data-span="6"] {
+        grid-column: span 6;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .controls {
+        justify-content: space-between;
+      }
+
+      .control-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .exercise-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .preview-card {
+        max-height: 92vh;
+      }
+
+      .preview-media img {
+        max-height: 58vh;
+      }
+    }
+
+    @keyframes cardIn {
+      from {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>💪 Plano de Treino Semanal</h1>
-  <p>GIFs animados de cada exercício — vê como se faz!</p>
-</header>
-
-<main>
-
-  <!-- SEGUNDA -->
-  <div class="day-section cardio">
-    <div class="day-header">
-      <span class="emoji">🏃</span>
-      <div><h2>Segunda-feira</h2><div class="day-focus">Cardio</div></div>
-    </div>
-    <div class="cardio-body">
-      <div class="cardio-item">
-        <span class="ci-icon">🏃</span>
-        <div><div class="ci-label">Esteira</div><div class="ci-sub">Ritmo moderado constante</div></div>
-        <div class="ci-dur">45 min</div>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1 id="appTitle"></h1>
+        <p id="appSubtitle"></p>
       </div>
-      <div class="cardio-item">
-        <span class="ci-icon">⚡</span>
-        <div><div class="ci-label">Intervalos (opcional)</div><div class="ci-sub">2 min rápido / 3 min moderado</div></div>
-        <div class="ci-dur">opcional</div>
+
+      <div class="controls">
+        <div class="control-group">
+          <span id="languageLabel"></span>
+          <div class="segmented" role="group" aria-label="Language selector">
+            <button class="segment-btn" type="button" data-lang="en">EN</button>
+            <button class="segment-btn" type="button" data-lang="pt">PT</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span id="themeLabel"></span>
+          <div class="segmented" role="group" aria-label="Theme selector">
+            <button class="segment-btn" type="button" data-theme-choice="light">Light</button>
+            <button class="segment-btn" type="button" data-theme-choice="dark">Dark</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="tip"><strong>💡 Dica:</strong> Mantém inclinação 1–2% para simular terreno real.</div>
+    </header>
+
+    <main class="grid" id="planRoot"></main>
+
+    <footer class="footer">
+      <p id="footerLine1"></p>
+      <p id="footerLine2"></p>
+    </footer>
   </div>
 
-  <!-- TERÇA -->
-  <div class="day-section">
-    <div class="day-header">
-      <span class="emoji">🏋️</span>
-      <div><h2>Terça-feira</h2><div class="day-focus">Peito · Tríceps · Abdómen</div></div>
-    </div>
-    <div class="exercises-grid">
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/supino.gif" alt="Supino" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🏋️</span><span>GIF não encontrado</span></div>
+  <div class="preview-modal" id="previewModal" aria-hidden="true">
+    <div class="preview-card" role="dialog" aria-modal="true" aria-labelledby="previewExerciseName">
+      <div class="preview-head">
+        <div class="preview-title">
+          <strong id="previewExerciseName"></strong>
+          <span id="previewExerciseSets"></span>
         </div>
-        <div class="ex-info">
-          <div class="ex-name">Supino</div>
-          <div class="ex-badge">3 × 10-12</div>
-        </div>
+        <button class="close-btn" id="closePreviewBtn" type="button"></button>
       </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/crucifixo.gif" alt="Crucifixo máquina" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Crucifixo máquina</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
+      <div class="preview-media">
+        <img id="previewImage" src="" alt="" />
       </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/triceps-polia.gif" alt="Tríceps na polia" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Tríceps na polia</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/triceps-frances.gif" alt="Tríceps Francês" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Tríceps Francês</div>
-          <div class="ex-badge">3 × 10</div>
-          <div class="changed-badge">✦ substituído</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/prancha.gif" alt="Prancha" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Prancha</div>
-          <div class="ex-badge">3 × 30-60s</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/abdominal.gif" alt="Abdominal" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Abdominal</div>
-          <div class="ex-badge">3 × 15</div>
-        </div>
-      </div>
-
-    </div>
-    <div class="tip"><strong>💡 Tríceps Francês</strong> — mais seguro para os ombros e isola melhor o tríceps.</div>
-  </div>
-
-  <!-- QUARTA -->
-  <div class="day-section back">
-    <div class="day-header">
-      <span class="emoji">🔙</span>
-      <div><h2>Quarta-feira</h2><div class="day-focus">Costas · Bíceps · Abdómen</div></div>
-    </div>
-    <div class="exercises-grid">
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/puxada.gif" alt="Puxada na frente" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Puxada na frente</div>
-          <div class="ex-badge">3 × 10-12</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/remada.gif" alt="Remada máquina" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Remada máquina</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/biceps-halteres.gif" alt="Bíceps halteres" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Bíceps halteres</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/biceps-barra.gif" alt="Bíceps barra" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟠</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Bíceps barra</div>
-          <div class="ex-badge">3 × 10</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/elevacao-pernas.gif" alt="Elevação de pernas" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Elevação de pernas</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
-
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/prancha-lateral.gif" alt="Prancha lateral" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟡</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Prancha lateral</div>
-          <div class="ex-badge">3 × 30s cada</div>
-        </div>
-      </div>
-
+      <div class="preview-foot" id="previewHint"></div>
     </div>
   </div>
 
-  <!-- QUINTA -->
-  <div class="day-section legs">
-    <div class="day-header">
-      <span class="emoji">🦵</span>
-      <div><h2>Quinta-feira</h2><div class="day-focus">Pernas · Ombro</div></div>
-    </div>
-    <div class="exercises-grid">
+  <script>
+    const translations = {
+      en: {
+        title: "💪 Weekly Workout Plan",
+        subtitle: "Tap any exercise to zoom the GIF",
+        languageLabel: "Language",
+        themeLabel: "Theme",
+        themeLight: "Light",
+        themeDark: "Dark",
+        fallback: "GIF not found",
+        updatedTag: "updated",
+        tipLabel: "Tip",
+        zoomTag: "Zoom",
+        closeLabel: "Close",
+        previewHint: "Click outside the panel to close",
+        footerLine1: "Consistency drives progress.",
+        footerLine2: "Use Ctrl+P in your browser to export this page as PDF.",
+        days: {
+          monday: "Monday",
+          tuesday: "Tuesday",
+          wednesday: "Wednesday",
+          thursday: "Thursday",
+          friday: "Friday"
+        },
+        focuses: {
+          cardio: "Cardio",
+          push: "Chest, Triceps, Core",
+          pull: "Back, Biceps, Core",
+          legs: "Legs, Shoulders"
+        },
+        tips: {
+          monday: "Keep 1-2% incline to simulate outdoor effort.",
+          tuesday: "The lying triceps extension usually feels more stable on shoulders.",
+          thursday: "Goblet squat keeps the torso upright and is beginner-friendly.",
+          friday: "Lower intensity cardio can help active recovery before the weekend."
+        },
+        exercises: {
+          benchPress: "Bench Press",
+          machineFly: "Machine Fly",
+          tricepsPushdown: "Triceps Pushdown",
+          lyingTricepsExtension: "Lying Triceps Extension",
+          plank: "Plank",
+          crunch: "Crunch",
+          latPulldown: "Lat Pulldown",
+          seatedRow: "Seated Row",
+          dumbbellCurl: "Dumbbell Curl",
+          barbellCurl: "Barbell Curl",
+          legRaise: "Leg Raise",
+          sidePlank: "Side Plank",
+          gobletSquat: "Goblet Squat",
+          legPress: "Leg Press",
+          legExtension: "Leg Extension",
+          lateralRaise: "Lateral Raise",
+          shoulderPress: "Shoulder Press"
+        },
+        cardio: {
+          treadmill: "Treadmill",
+          treadmillDetailMon: "Steady moderate pace",
+          intervals: "Intervals (optional)",
+          intervalsDetail: "2 min hard / 3 min moderate",
+          treadmillDetailFri: "Vary intensity based on recovery",
+          altCardio: "Alternative (optional)",
+          altCardioDetail: "Bike or elliptical"
+        },
+        durations: {
+          fortyFive: "45 min",
+          optional: "optional",
+          variable: "variable"
+        }
+      },
+      pt: {
+        title: "💪 Plano de Treino Semanal",
+        subtitle: "Toque em qualquer exercicio para ampliar o GIF",
+        languageLabel: "Idioma",
+        themeLabel: "Tema",
+        themeLight: "Claro",
+        themeDark: "Escuro",
+        fallback: "GIF nao encontrado",
+        updatedTag: "atualizado",
+        tipLabel: "Dica",
+        zoomTag: "Zoom",
+        closeLabel: "Fechar",
+        previewHint: "Clique fora do painel para fechar",
+        footerLine1: "Consistencia e a chave do progresso.",
+        footerLine2: "Use Ctrl+P no navegador para exportar esta pagina em PDF.",
+        days: {
+          monday: "Segunda-feira",
+          tuesday: "Terca-feira",
+          wednesday: "Quarta-feira",
+          thursday: "Quinta-feira",
+          friday: "Sexta-feira"
+        },
+        focuses: {
+          cardio: "Cardio",
+          push: "Peito, Triceps, Core",
+          pull: "Costas, Biceps, Core",
+          legs: "Pernas, Ombros"
+        },
+        tips: {
+          monday: "Mantem inclinacao de 1-2% para simular melhor o esforco ao ar livre.",
+          tuesday: "A extensao de triceps deitado costuma ser mais estavel para os ombros.",
+          thursday: "O goblet squat mantem o tronco mais vertical e e amigavel para iniciantes.",
+          friday: "Cardio mais leve ajuda na recuperacao ativa antes do fim de semana."
+        },
+        exercises: {
+          benchPress: "Supino",
+          machineFly: "Crucifixo maquina",
+          tricepsPushdown: "Triceps na polia",
+          lyingTricepsExtension: "Triceps Frances",
+          plank: "Prancha",
+          crunch: "Abdominal",
+          latPulldown: "Puxada na frente",
+          seatedRow: "Remada maquina",
+          dumbbellCurl: "Biceps halteres",
+          barbellCurl: "Biceps barra",
+          legRaise: "Elevacao de pernas",
+          sidePlank: "Prancha lateral",
+          gobletSquat: "Agachamento Goblet",
+          legPress: "Leg press",
+          legExtension: "Extensao de pernas",
+          lateralRaise: "Elevacao lateral",
+          shoulderPress: "Desenvolvimento ombro"
+        },
+        cardio: {
+          treadmill: "Esteira",
+          treadmillDetailMon: "Ritmo moderado constante",
+          intervals: "Intervalos (opcional)",
+          intervalsDetail: "2 min rapido / 3 min moderado",
+          treadmillDetailFri: "Varia intensidade conforme recuperacao",
+          altCardio: "Alternativa (opcional)",
+          altCardioDetail: "Bicicleta ou eliptica"
+        },
+        durations: {
+          fortyFive: "45 min",
+          optional: "opcional",
+          variable: "variavel"
+        }
+      }
+    };
 
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/goblet-squat.gif" alt="Agachamento Goblet" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Agachamento Goblet</div>
-          <div class="ex-badge">3 × 10-12</div>
-          <div class="changed-badge">✦ substituído</div>
-        </div>
-      </div>
+    const dayIcons = {
+      monday: "🏃",
+      tuesday: "🏋️",
+      wednesday: "🔙",
+      thursday: "🦵",
+      friday: "🚴"
+    };
 
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/leg-press.gif" alt="Leg press" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Leg press</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
+    const planData = [
+      {
+        key: "monday",
+        kind: "cardio",
+        span: "6",
+        focusKey: "cardio",
+        tipKey: "monday",
+        cardio: [
+          { title: "treadmill", detail: "treadmillDetailMon", duration: "fortyFive" },
+          { title: "intervals", detail: "intervalsDetail", duration: "optional" }
+        ]
+      },
+      {
+        key: "tuesday",
+        kind: "push",
+        span: "6",
+        focusKey: "push",
+        tipKey: "tuesday",
+        exercises: [
+          { name: "benchPress", sets: "3 x 10-12", file: "supino.gif" },
+          { name: "machineFly", sets: "3 x 12", file: "crucifixo.gif" },
+          { name: "tricepsPushdown", sets: "3 x 12", file: "triceps-polia.gif" },
+          { name: "lyingTricepsExtension", sets: "3 x 10", file: "triceps-frances.gif", updated: true },
+          { name: "plank", sets: "3 x 30-60s", file: "prancha.gif" },
+          { name: "crunch", sets: "3 x 15", file: "abdominal.gif" }
+        ]
+      },
+      {
+        key: "wednesday",
+        kind: "pull",
+        span: "12",
+        focusKey: "pull",
+        exercises: [
+          { name: "latPulldown", sets: "3 x 10-12", file: "puxada.gif" },
+          { name: "seatedRow", sets: "3 x 12", file: "remada.gif" },
+          { name: "dumbbellCurl", sets: "3 x 12", file: "biceps-halteres.gif" },
+          { name: "barbellCurl", sets: "3 x 10", file: "biceps-barra.gif" },
+          { name: "legRaise", sets: "3 x 12", file: "elevacao-pernas.gif" },
+          { name: "sidePlank", sets: "3 x 30s each", file: "prancha-lateral.gif" }
+        ]
+      },
+      {
+        key: "thursday",
+        kind: "legs",
+        span: "12",
+        focusKey: "legs",
+        tipKey: "thursday",
+        exercises: [
+          { name: "gobletSquat", sets: "3 x 10-12", file: "goblet-squat.gif", updated: true },
+          { name: "legPress", sets: "3 x 12", file: "leg-press.gif" },
+          { name: "legExtension", sets: "3 x 12", file: "extensao-pernas.gif" },
+          { name: "lateralRaise", sets: "3 x 12", file: "elevacao-lateral.gif" },
+          { name: "shoulderPress", sets: "3 x 10", file: "desenvolvimento-ombro.gif" }
+        ]
+      },
+      {
+        key: "friday",
+        kind: "cardio",
+        span: "12",
+        focusKey: "cardio",
+        tipKey: "friday",
+        cardio: [
+          { title: "treadmill", detail: "treadmillDetailFri", duration: "fortyFive" },
+          { title: "altCardio", detail: "altCardioDetail", duration: "variable" }
+        ]
+      }
+    ];
 
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/extensao-pernas.gif" alt="Extensão de pernas" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🟣</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Extensão de pernas</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
+    const planRoot = document.getElementById("planRoot");
+    const languageButtons = [...document.querySelectorAll("[data-lang]")];
+    const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
 
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/elevacao-lateral.gif" alt="Elevação lateral" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Elevação lateral</div>
-          <div class="ex-badge">3 × 12</div>
-        </div>
-      </div>
+    const previewModal = document.getElementById("previewModal");
+    const previewImage = document.getElementById("previewImage");
+    const previewExerciseName = document.getElementById("previewExerciseName");
+    const previewExerciseSets = document.getElementById("previewExerciseSets");
+    const closePreviewBtn = document.getElementById("closePreviewBtn");
+    const previewHint = document.getElementById("previewHint");
 
-      <div class="ex-card">
-        <div class="ex-gif">
-          <img src="gifs/desenvolvimento-ombro.gif" alt="Desenvolvimento ombro" onerror="showFallback(this)"/>
-          <div class="fallback"><span class="fb-icon">🔵</span><span>GIF não encontrado</span></div>
-        </div>
-        <div class="ex-info">
-          <div class="ex-name">Desenvolvimento ombro</div>
-          <div class="ex-badge">3 × 10</div>
-        </div>
-      </div>
+    let currentLanguage = "en";
+    let currentTheme = "light";
 
-    </div>
-    <div class="tip"><strong>💡 Agachamento Goblet</strong> — mantém o tronco erecto e é mais seguro para os joelhos.</div>
-  </div>
+    function setActiveButton(buttons, value, attr) {
+      for (const button of buttons) {
+        button.classList.toggle("active", button.getAttribute(attr) === value);
+      }
+    }
 
-  <!-- SEXTA -->
-  <div class="day-section cardio">
-    <div class="day-header">
-      <span class="emoji">🏃</span>
-      <div><h2>Sexta-feira</h2><div class="day-focus">Cardio</div></div>
-    </div>
-    <div class="cardio-body">
-      <div class="cardio-item">
-        <span class="ci-icon">🏃</span>
-        <div><div class="ci-label">Esteira</div><div class="ci-sub">Pode variar a intensidade</div></div>
-        <div class="ci-dur">45 min</div>
-      </div>
-      <div class="cardio-item">
-        <span class="ci-icon">🚴</span>
-        <div><div class="ci-label">Alternativa (opcional)</div><div class="ci-sub">Bicicleta ou elíptica</div></div>
-        <div class="ci-dur">variável</div>
-      </div>
-    </div>
-    <div class="tip"><strong>💡 Dica:</strong> Cardio leve na sexta ajuda na recuperação activa dos músculos.</div>
-  </div>
+    function applyTheme(theme) {
+      currentTheme = theme;
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("workout-theme", theme);
+      setActiveButton(themeButtons, theme, "data-theme-choice");
+    }
 
-</main>
+    function openPreview(exercise, t) {
+      previewExerciseName.textContent = t.exercises[exercise.name];
+      previewExerciseSets.textContent = exercise.sets;
+      previewImage.src = `gifs/${exercise.file}`;
+      previewImage.alt = t.exercises[exercise.name];
+      previewHint.textContent = t.previewHint;
+      closePreviewBtn.textContent = t.closeLabel;
 
-<footer>
-  <p>💪 Consistência é a chave. Bons treinos!</p>
-  <p>🖨️ Para guardar como PDF: <strong>Ctrl+P → Guardar como PDF</strong></p>
-</footer>
+      previewModal.classList.add("open");
+      previewModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+    }
 
-<script>
-  function showFallback(img) {
-    img.style.display = 'none';
-    const fb = img.parentElement.querySelector('.fallback');
-    if (fb) fb.style.display = 'flex';
-  }
-</script>
+    function closePreview() {
+      previewModal.classList.remove("open");
+      previewModal.setAttribute("aria-hidden", "true");
+      previewImage.src = "";
+      document.body.classList.remove("modal-open");
+    }
 
+    function renderPlan(language) {
+      currentLanguage = language;
+      const t = translations[language];
+      planRoot.innerHTML = "";
+
+      document.documentElement.lang = language === "pt" ? "pt" : "en";
+      document.title = t.title;
+      document.getElementById("appTitle").textContent = t.title;
+      document.getElementById("appSubtitle").textContent = t.subtitle;
+      document.getElementById("languageLabel").textContent = t.languageLabel;
+      document.getElementById("themeLabel").textContent = t.themeLabel;
+      document.getElementById("footerLine1").textContent = t.footerLine1;
+      document.getElementById("footerLine2").textContent = t.footerLine2;
+      themeButtons[0].textContent = t.themeLight;
+      themeButtons[1].textContent = t.themeDark;
+      closePreviewBtn.textContent = t.closeLabel;
+      previewHint.textContent = t.previewHint;
+
+      for (const day of planData) {
+        const dayCard = document.createElement("section");
+        dayCard.className = "day-card";
+        dayCard.dataset.kind = day.kind;
+        dayCard.dataset.span = day.span;
+
+        const head = document.createElement("header");
+        head.className = "day-head";
+        head.innerHTML = `
+          <div class="day-title"><span>${dayIcons[day.key]}</span><span>${t.days[day.key]}</span></div>
+          <div class="day-focus">${t.focuses[day.focusKey]}</div>
+        `;
+        dayCard.appendChild(head);
+
+        if (day.exercises) {
+          const grid = document.createElement("div");
+          grid.className = "exercise-grid";
+
+          for (const exercise of day.exercises) {
+            const card = document.createElement("article");
+            card.className = "exercise";
+            card.tabIndex = 0;
+            card.setAttribute("role", "button");
+            card.setAttribute("aria-label", `${t.exercises[exercise.name]} - ${exercise.sets}`);
+
+            card.innerHTML = `
+              <span class="expand-hint">${t.zoomTag}</span>
+              <div class="exercise-media">
+                <img src="gifs/${exercise.file}" alt="${t.exercises[exercise.name]}" onerror="showFallback(this)" />
+                <div class="fallback">${t.fallback}</div>
+              </div>
+              <div class="exercise-body">
+                <div class="exercise-name">${t.exercises[exercise.name]}</div>
+                <div class="exercise-meta">${exercise.sets}</div>
+                ${exercise.updated ? `<div class="exercise-note">${t.updatedTag}</div>` : ""}
+              </div>
+            `;
+
+            card.addEventListener("click", () => openPreview(exercise, t));
+            card.addEventListener("keydown", (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openPreview(exercise, t);
+              }
+            });
+
+            grid.appendChild(card);
+          }
+
+          dayCard.appendChild(grid);
+        }
+
+        if (day.cardio) {
+          const list = document.createElement("div");
+          list.className = "cardio-list";
+
+          for (const item of day.cardio) {
+            const row = document.createElement("article");
+            row.className = "cardio-item";
+            row.innerHTML = `
+              <div>
+                <div class="cardio-title">${t.cardio[item.title]}</div>
+                <div class="cardio-sub">${t.cardio[item.detail]}</div>
+              </div>
+              <div class="duration">${t.durations[item.duration]}</div>
+            `;
+            list.appendChild(row);
+          }
+
+          dayCard.appendChild(list);
+        }
+
+        if (day.tipKey) {
+          const tip = document.createElement("div");
+          tip.className = "tip";
+          tip.textContent = `${t.tipLabel}: ${t.tips[day.tipKey]}`;
+          dayCard.appendChild(tip);
+        }
+
+        planRoot.appendChild(dayCard);
+      }
+
+      setActiveButton(languageButtons, language, "data-lang");
+      setActiveButton(themeButtons, currentTheme, "data-theme-choice");
+    }
+
+    function showFallback(img) {
+      img.style.display = "none";
+      const fallback = img.parentElement.querySelector(".fallback");
+      if (fallback) {
+        fallback.style.display = "flex";
+      }
+    }
+
+    for (const button of languageButtons) {
+      button.addEventListener("click", () => {
+        const language = button.getAttribute("data-lang");
+        localStorage.setItem("workout-language", language);
+        renderPlan(language);
+      });
+    }
+
+    for (const button of themeButtons) {
+      button.addEventListener("click", () => {
+        const theme = button.getAttribute("data-theme-choice");
+        applyTheme(theme);
+      });
+    }
+
+    closePreviewBtn.addEventListener("click", closePreview);
+
+    previewModal.addEventListener("click", (event) => {
+      if (event.target === previewModal) {
+        closePreview();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && previewModal.classList.contains("open")) {
+        closePreview();
+      }
+    });
+
+    const storedLanguage = localStorage.getItem("workout-language");
+    const initialLanguage = storedLanguage && translations[storedLanguage] ? storedLanguage : "en";
+
+    const storedTheme = localStorage.getItem("workout-theme");
+    const initialTheme = storedTheme === "dark" ? "dark" : "light";
+
+    applyTheme(initialTheme);
+    renderPlan(initialLanguage);
+  </script>
 </body>
 </html>
