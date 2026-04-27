@@ -61,10 +61,221 @@
     }
 
     .shell {
-      width: min(1140px, 100%);
+      width: min(520px, 100%);
       margin: 0 auto;
       display: grid;
       gap: 20px;
+    }
+
+    .progress-board {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      animation: cardIn 450ms ease both;
+    }
+
+    .progress-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .progress-title {
+      display: grid;
+      gap: 2px;
+    }
+
+    .progress-title strong {
+      font-size: 0.95rem;
+    }
+
+    .progress-title span {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .reset-btn {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      min-width: 44px;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .today-strip {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 11px;
+      background: linear-gradient(110deg, color-mix(in srgb, var(--primary) 14%, white), color-mix(in srgb, var(--accent) 12%, white));
+      display: grid;
+      gap: 8px;
+    }
+
+    html[data-theme="dark"] .today-strip {
+      background: linear-gradient(110deg, color-mix(in srgb, var(--primary) 24%, #0f1523), color-mix(in srgb, var(--accent) 14%, #0f1523));
+    }
+
+    .today-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .today-day {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--primary-strong);
+    }
+
+    .today-badge {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .today-title {
+      font-size: 0.93rem;
+      font-weight: 700;
+    }
+
+    .today-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--line) 65%, white);
+      border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transition: width 260ms ease;
+    }
+
+    .progress-text {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .days-tracker {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .track-day {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-soft);
+      color: var(--text);
+      padding: 8px 6px;
+      display: grid;
+      gap: 3px;
+      justify-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      font: inherit;
+    }
+
+    .track-day:hover {
+      transform: translateY(-2px);
+    }
+
+    .track-day[data-status="done"] {
+      border-color: #1ea76b;
+      background: #eafcf3;
+      color: #0e673f;
+    }
+
+    .track-day[data-status="missed"] {
+      border-color: #dd5050;
+      background: #fff0f0;
+      color: #973737;
+    }
+
+    .track-day[data-status="pending"] {
+      border-style: dashed;
+    }
+
+    html[data-theme="dark"] .track-day[data-status="done"] {
+      background: #153426;
+      color: #aef5cf;
+      border-color: #2f8e63;
+    }
+
+    html[data-theme="dark"] .track-day[data-status="missed"] {
+      background: #3b2020;
+      color: #ffb4b4;
+      border-color: #a25454;
+    }
+
+    .track-day span {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .track-day strong {
+      font-size: 0.88rem;
+      line-height: 1;
+    }
+
+    .progress-summary {
+      display: grid;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: var(--muted);
     }
 
     .topbar {
@@ -210,10 +421,46 @@
       background: linear-gradient(90deg, var(--tone-soft), color-mix(in srgb, var(--surface) 80%, transparent));
       padding: 16px 18px;
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
+    }
+
+    .day-head-right {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+    }
+
+    .day-progress-mini {
+      font-size: 0.69rem;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .complete-toggle {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 11px;
+      font: inherit;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .complete-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .complete-toggle.is-done {
+      background: #16a168;
+      border-color: #0d8954;
+      color: #ffffff;
     }
 
     .day-title {
@@ -251,6 +498,11 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: zoom-in;
       position: relative;
+    }
+
+    .exercise.is-complete {
+      border-color: color-mix(in srgb, #16a168 65%, var(--line));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, #16a168 36%, transparent);
     }
 
     .exercise:hover,
@@ -319,6 +571,61 @@
       flex: 1;
     }
 
+    .exercise-actions {
+      margin-top: auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .variation-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: auto;
+      min-width: 0;
+    }
+
+    .variation-wrap label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .variation-select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.67rem;
+      font-weight: 600;
+      padding: 4px 6px;
+      max-width: 125px;
+    }
+
+    .item-toggle {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .item-toggle.is-done {
+      background: #16a168;
+      border-color: #0d8954;
+      color: #ffffff;
+    }
+
     .exercise-name {
       font-size: 0.82rem;
       font-weight: 600;
@@ -370,10 +677,15 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto auto;
       gap: 10px;
       padding: 12px;
       align-items: center;
+    }
+
+    .cardio-item.is-complete {
+      border-color: color-mix(in srgb, #16a168 65%, var(--line));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, #16a168 36%, transparent);
     }
 
     .cardio-title {
@@ -539,6 +851,10 @@
         justify-content: space-between;
       }
 
+      .days-tracker {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
       .exercise-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -583,19 +899,52 @@
 
         <div class="control-group">
           <span id="themeLabel"></span>
-          <div class="segmented" role="group" aria-label="Theme selector">
-            <button class="segment-btn" type="button" data-theme-choice="light">Light</button>
-            <button class="segment-btn" type="button" data-theme-choice="dark">Dark</button>
+          <div class="segmented" role="group" aria-label="Theme toggle">
+            <button class="theme-toggle" type="button" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
+              <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+            </button>
           </div>
         </div>
       </div>
     </header>
 
+    <section class="progress-board" id="todaySection" aria-live="polite">
+      <div class="today-strip">
+        <div class="today-top">
+          <p class="today-day" id="todayDayLabel"></p>
+          <span class="today-badge" id="todayBadge"></span>
+        </div>
+        <p class="today-title" id="todayMainLine"></p>
+        <div class="today-meta">
+          <span id="todayFocusLine"></span>
+          <span id="todayItemsLine"></span>
+        </div>
+      </div>
+      <div class="progress-head">
+        <div class="progress-title">
+          <strong id="progressTitle"></strong>
+          <span id="progressSubtitle"></span>
+        </div>
+        <button class="reset-btn" id="resetWeekBtn" type="button"></button>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="weekProgressBar"></div>
+      </div>
+      <p class="progress-text" id="weekProgressText"></p>
+      <div class="days-tracker" id="daysTracker"></div>
+      <div class="progress-summary">
+        <p id="todayStatus"></p>
+        <p id="doneDaysText"></p>
+        <p id="missingDaysText"></p>
+        <p id="pendingDaysText"></p>
+      </div>
+    </section>
+
     <main class="grid" id="planRoot"></main>
 
-    <footer class="footer">
+    <footer class="footer" id="aboutSection">
       <p id="footerLine1"></p>
-      <p id="footerLine2"></p>
+      <p id="footerCredit"></p>
     </footer>
   </div>
 
@@ -622,6 +971,8 @@
         subtitle: "Tap any exercise to zoom the GIF",
         languageLabel: "Language",
         themeLabel: "Theme",
+        themeToggleToDark: "Switch to dark mode",
+        themeToggleToLight: "Switch to light mode",
         themeLight: "Light",
         themeDark: "Dark",
         fallback: "GIF not found",
@@ -631,7 +982,35 @@
         closeLabel: "Close",
         previewHint: "Click outside the panel to close",
         footerLine1: "Consistency drives progress.",
-        footerLine2: "Use Ctrl+P in your browser to export this page as PDF.",
+        footerCredit: "Developed by Gabriel Lima",
+        progressTitle: "Weekly progress",
+        progressSubtitle: "Mark each day as done",
+        todayRestTitle: "Recovery day",
+        todayFocusLabel: "Focus",
+        todayItemsLabel: "Items",
+        statusDone: "Done",
+        statusMissed: "Not done",
+        statusPending: "Pending",
+        resetWeek: "Reset week",
+        resetConfirm: "Do you want to clear this week progress?",
+        weekProgress: "Completed",
+        doneLabel: "Done",
+        missedLabel: "Missed",
+        pendingLabel: "Pending",
+        todayDone: "Today is completed.",
+        todayMissed: "Today is not completed yet.",
+        todayPending: "Today is still pending.",
+        todayRest: "Today is outside your Monday-Friday plan.",
+        doneListLabel: "Done days:",
+        missedListLabel: "Not done days:",
+        pendingListLabel: "Upcoming days:",
+        noneLabel: "none",
+        markDone: "Mark done",
+        markUndo: "Undo",
+        markExerciseDone: "Done",
+        markExerciseUndo: "Undo",
+        variationLabel: "Swap",
+        dayItemsDone: "done",
         days: {
           monday: "Monday",
           tuesday: "Tuesday",
@@ -668,7 +1047,19 @@
           legPress: "Leg Press",
           legExtension: "Leg Extension",
           lateralRaise: "Lateral Raise",
-          shoulderPress: "Shoulder Press"
+          shoulderPress: "Shoulder Press",
+          inclineBenchPress: "Incline Bench Press",
+          pushUps: "Push-Ups",
+          pecDeck: "Pec Deck",
+          overheadTricepsExtension: "Overhead Triceps Extension",
+          deadBug: "Dead Bug",
+          assistedPullUp: "Assisted Pull-Up",
+          oneArmDumbbellRow: "One-Arm Dumbbell Row",
+          hammerCurl: "Hammer Curl",
+          russianTwist: "Russian Twist",
+          walkingLunge: "Walking Lunge",
+          legCurl: "Leg Curl",
+          arnoldPress: "Arnold Press"
         },
         cardio: {
           treadmill: "Treadmill",
@@ -683,6 +1074,13 @@
           fortyFive: "45 min",
           optional: "optional",
           variable: "variable"
+        },
+        dayShort: {
+          monday: "Mon",
+          tuesday: "Tue",
+          wednesday: "Wed",
+          thursday: "Thu",
+          friday: "Fri"
         }
       },
       pt: {
@@ -690,6 +1088,8 @@
         subtitle: "Toque em qualquer exercicio para ampliar o GIF",
         languageLabel: "Idioma",
         themeLabel: "Tema",
+        themeToggleToDark: "Mudar para modo escuro",
+        themeToggleToLight: "Mudar para modo claro",
         themeLight: "Claro",
         themeDark: "Escuro",
         fallback: "GIF nao encontrado",
@@ -699,7 +1099,35 @@
         closeLabel: "Fechar",
         previewHint: "Clique fora do painel para fechar",
         footerLine1: "Consistencia e a chave do progresso.",
-        footerLine2: "Use Ctrl+P no navegador para exportar esta pagina em PDF.",
+        footerCredit: "Desenvolvido por Gabriel Lima",
+        progressTitle: "Progresso semanal",
+        progressSubtitle: "Marque cada dia como concluido",
+        todayRestTitle: "Dia de recuperacao",
+        todayFocusLabel: "Foco",
+        todayItemsLabel: "Itens",
+        statusDone: "Feito",
+        statusMissed: "Nao feito",
+        statusPending: "Pendente",
+        resetWeek: "Zerar semana",
+        resetConfirm: "Deseja limpar o progresso desta semana?",
+        weekProgress: "Concluido",
+        doneLabel: "Feito",
+        missedLabel: "Nao feito",
+        pendingLabel: "Pendente",
+        todayDone: "Hoje esta concluido.",
+        todayMissed: "Hoje ainda nao foi concluido.",
+        todayPending: "Hoje ainda esta pendente.",
+        todayRest: "Hoje esta fora do plano de segunda a sexta.",
+        doneListLabel: "Dias feitos:",
+        missedListLabel: "Dias nao feitos:",
+        pendingListLabel: "Dias futuros:",
+        noneLabel: "nenhum",
+        markDone: "Marcar feito",
+        markUndo: "Desfazer",
+        markExerciseDone: "Feito",
+        markExerciseUndo: "Desfazer",
+        variationLabel: "Troca",
+        dayItemsDone: "feitos",
         days: {
           monday: "Segunda-feira",
           tuesday: "Terca-feira",
@@ -736,7 +1164,19 @@
           legPress: "Leg press",
           legExtension: "Extensao de pernas",
           lateralRaise: "Elevacao lateral",
-          shoulderPress: "Desenvolvimento ombro"
+          shoulderPress: "Desenvolvimento ombro",
+          inclineBenchPress: "Supino inclinado",
+          pushUps: "Flexao de braco",
+          pecDeck: "Peck deck",
+          overheadTricepsExtension: "Triceps acima da cabeca",
+          deadBug: "Dead bug",
+          assistedPullUp: "Barra assistida",
+          oneArmDumbbellRow: "Remada unilateral",
+          hammerCurl: "Rosca martelo",
+          russianTwist: "Russian twist",
+          walkingLunge: "Passada andando",
+          legCurl: "Mesa flexora",
+          arnoldPress: "Arnold press"
         },
         cardio: {
           treadmill: "Esteira",
@@ -751,6 +1191,13 @@
           fortyFive: "45 min",
           optional: "opcional",
           variable: "variavel"
+        },
+        dayShort: {
+          monday: "Seg",
+          tuesday: "Ter",
+          wednesday: "Qua",
+          thursday: "Qui",
+          friday: "Sex"
         }
       }
     };
@@ -833,7 +1280,8 @@
 
     const planRoot = document.getElementById("planRoot");
     const languageButtons = [...document.querySelectorAll("[data-lang]")];
-    const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    const themeToggleIcon = document.getElementById("themeToggleIcon");
 
     const previewModal = document.getElementById("previewModal");
     const previewImage = document.getElementById("previewImage");
@@ -841,9 +1289,402 @@
     const previewExerciseSets = document.getElementById("previewExerciseSets");
     const closePreviewBtn = document.getElementById("closePreviewBtn");
     const previewHint = document.getElementById("previewHint");
+    const progressTitle = document.getElementById("progressTitle");
+    const progressSubtitle = document.getElementById("progressSubtitle");
+    const resetWeekBtn = document.getElementById("resetWeekBtn");
+    const weekProgressBar = document.getElementById("weekProgressBar");
+    const weekProgressText = document.getElementById("weekProgressText");
+    const daysTracker = document.getElementById("daysTracker");
+    const todayStatus = document.getElementById("todayStatus");
+    const doneDaysText = document.getElementById("doneDaysText");
+    const missingDaysText = document.getElementById("missingDaysText");
+    const pendingDaysText = document.getElementById("pendingDaysText");
+    const todayDayLabel = document.getElementById("todayDayLabel");
+    const todayBadge = document.getElementById("todayBadge");
+    const todayMainLine = document.getElementById("todayMainLine");
+    const todayFocusLine = document.getElementById("todayFocusLine");
+    const todayItemsLine = document.getElementById("todayItemsLine");
 
     let currentLanguage = "en";
     let currentTheme = "light";
+    let currentWeekKey = "";
+    let progressState = {};
+    let exerciseChoices = {};
+
+    const weekDays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+    const todayToPlan = {
+      1: "monday",
+      2: "tuesday",
+      3: "wednesday",
+      4: "thursday",
+      5: "friday"
+    };
+
+    const exerciseVariants = {
+      benchPress: [
+        { name: "benchPress", file: "supino.gif" },
+        { name: "inclineBenchPress", file: "supino-inclinado.gif" },
+        { name: "pushUps", file: "flexao.gif" }
+      ],
+      machineFly: [
+        { name: "machineFly", file: "crucifixo.gif" },
+        { name: "pecDeck", file: "peck-deck.gif" }
+      ],
+      tricepsPushdown: [
+        { name: "tricepsPushdown", file: "triceps-polia.gif" },
+        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" }
+      ],
+      lyingTricepsExtension: [
+        { name: "lyingTricepsExtension", file: "triceps-frances.gif" },
+        { name: "tricepsPushdown", file: "triceps-polia.gif" },
+        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" }
+      ],
+      plank: [
+        { name: "plank", file: "prancha.gif" },
+        { name: "deadBug", file: "dead-bug.gif" }
+      ],
+      crunch: [
+        { name: "crunch", file: "abdominal.gif" },
+        { name: "russianTwist", file: "russian-twist.gif" },
+        { name: "deadBug", file: "dead-bug.gif" }
+      ],
+      latPulldown: [
+        { name: "latPulldown", file: "puxada.gif" },
+        { name: "assistedPullUp", file: "barra-assistida.gif" }
+      ],
+      seatedRow: [
+        { name: "seatedRow", file: "remada.gif" },
+        { name: "oneArmDumbbellRow", file: "remada-unilateral.gif" }
+      ],
+      dumbbellCurl: [
+        { name: "dumbbellCurl", file: "biceps-halteres.gif" },
+        { name: "hammerCurl", file: "rosca-martelo.gif" }
+      ],
+      barbellCurl: [
+        { name: "barbellCurl", file: "biceps-barra.gif" },
+        { name: "dumbbellCurl", file: "biceps-halteres.gif" },
+        { name: "hammerCurl", file: "rosca-martelo.gif" }
+      ],
+      legRaise: [
+        { name: "legRaise", file: "elevacao-pernas.gif" },
+        { name: "russianTwist", file: "russian-twist.gif" }
+      ],
+      sidePlank: [
+        { name: "sidePlank", file: "prancha-lateral.gif" },
+        { name: "plank", file: "prancha.gif" },
+        { name: "deadBug", file: "dead-bug.gif" }
+      ],
+      gobletSquat: [
+        { name: "gobletSquat", file: "goblet-squat.gif" },
+        { name: "walkingLunge", file: "passada.gif" }
+      ],
+      legPress: [
+        { name: "legPress", file: "leg-press.gif" },
+        { name: "gobletSquat", file: "goblet-squat.gif" },
+        { name: "walkingLunge", file: "passada.gif" }
+      ],
+      legExtension: [
+        { name: "legExtension", file: "extensao-pernas.gif" },
+        { name: "legCurl", file: "mesa-flexora.gif" }
+      ],
+      lateralRaise: [
+        { name: "lateralRaise", file: "elevacao-lateral.gif" },
+        { name: "shoulderPress", file: "desenvolvimento-ombro.gif" },
+        { name: "arnoldPress", file: "arnold-press.gif" }
+      ],
+      shoulderPress: [
+        { name: "shoulderPress", file: "desenvolvimento-ombro.gif" },
+        { name: "arnoldPress", file: "arnold-press.gif" }
+      ]
+    };
+
+    function loadExerciseChoices() {
+      try {
+        const raw = localStorage.getItem("workout-exercise-choices-v1");
+        if (!raw) {
+          return {};
+        }
+        const parsed = JSON.parse(raw);
+        return typeof parsed === "object" && parsed !== null ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveExerciseChoices(choices) {
+      localStorage.setItem("workout-exercise-choices-v1", JSON.stringify(choices));
+    }
+
+    function getExerciseSlotKey(dayKey, baseExerciseName) {
+      return `${dayKey}:${baseExerciseName}`;
+    }
+
+    function getExerciseOptions(baseExercise) {
+      return exerciseVariants[baseExercise.name] || [{ name: baseExercise.name, file: baseExercise.file }];
+    }
+
+    function resolveExerciseVariant(dayKey, baseExercise) {
+      const options = getExerciseOptions(baseExercise);
+      const slotKey = getExerciseSlotKey(dayKey, baseExercise.name);
+      const storedChoice = exerciseChoices[slotKey];
+      const found = options.find((option) => option.name === storedChoice);
+      return found || options[0];
+    }
+
+    function setExerciseVariant(dayKey, baseExercise, variantName) {
+      const slotKey = getExerciseSlotKey(dayKey, baseExercise.name);
+      if (variantName === baseExercise.name) {
+        delete exerciseChoices[slotKey];
+      } else {
+        exerciseChoices[slotKey] = variantName;
+      }
+      saveExerciseChoices(exerciseChoices);
+      renderPlan(currentLanguage);
+    }
+
+    function getWeekStart(date = new Date()) {
+      const start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+      const weekday = start.getDay();
+      const diff = weekday === 0 ? -6 : 1 - weekday;
+      start.setDate(start.getDate() + diff);
+      return start;
+    }
+
+    function getWeekKey() {
+      return getWeekStart().toISOString().slice(0, 10);
+    }
+
+    function normalizeProgressState(rawState) {
+      const normalized = {};
+      if (!rawState || typeof rawState !== "object") {
+        return normalized;
+      }
+
+      for (const [key, value] of Object.entries(rawState)) {
+        if (value !== "done") {
+          continue;
+        }
+
+        if (key.startsWith("day:") || key.startsWith("item:")) {
+          normalized[key] = "done";
+          continue;
+        }
+
+        if (weekDays.includes(key)) {
+          normalized[`day:${key}`] = "done";
+        }
+      }
+
+      return normalized;
+    }
+
+    function loadWeekProgress() {
+      const key = getWeekKey();
+      const raw = localStorage.getItem(`workout-progress-${key}`);
+      if (!raw) {
+        return {};
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        return normalizeProgressState(parsed);
+      } catch {
+        return {};
+      }
+    }
+
+    function saveWeekProgress() {
+      localStorage.setItem(`workout-progress-${currentWeekKey}`, JSON.stringify(progressState));
+    }
+
+    function syncWeekProgress() {
+      const liveWeek = getWeekKey();
+      if (liveWeek !== currentWeekKey) {
+        currentWeekKey = liveWeek;
+        progressState = loadWeekProgress();
+      }
+    }
+
+    function getTodayPlanKey() {
+      return todayToPlan[new Date().getDay()] || null;
+    }
+
+    function getDayByKey(dayKey) {
+      return planData.find((day) => day.key === dayKey) || null;
+    }
+
+    function getDayItemIds(day) {
+      const ids = [];
+      if (day.exercises) {
+        for (const exercise of day.exercises) {
+          ids.push(`exercise:${exercise.name}`);
+        }
+      }
+      if (day.cardio) {
+        for (let index = 0; index < day.cardio.length; index += 1) {
+          ids.push(`cardio:${index}`);
+        }
+      }
+      return ids;
+    }
+
+    function getItemProgressKey(dayKey, itemId) {
+      return `item:${dayKey}:${itemId}`;
+    }
+
+    function isItemDone(dayKey, itemId) {
+      return progressState[getItemProgressKey(dayKey, itemId)] === "done";
+    }
+
+    function isDayManualDone(dayKey) {
+      return progressState[`day:${dayKey}`] === "done";
+    }
+
+    function isDayDone(dayKey) {
+      if (isDayManualDone(dayKey)) {
+        return true;
+      }
+
+      const day = getDayByKey(dayKey);
+      if (!day) {
+        return false;
+      }
+
+      const itemIds = getDayItemIds(day);
+      if (!itemIds.length) {
+        return false;
+      }
+
+      return itemIds.every((itemId) => isItemDone(dayKey, itemId));
+    }
+
+    function getDayProgressCount(dayKey) {
+      const day = getDayByKey(dayKey);
+      if (!day) {
+        return { done: 0, total: 0 };
+      }
+
+      const itemIds = getDayItemIds(day);
+      const done = itemIds.filter((itemId) => isItemDone(dayKey, itemId)).length;
+      return { done, total: itemIds.length };
+    }
+
+    function getEffectiveStatus(dayKey) {
+      if (isDayDone(dayKey)) {
+        return "done";
+      }
+
+      const todayKey = getTodayPlanKey();
+      const todayIndex = todayKey ? weekDays.indexOf(todayKey) : -1;
+      const dayIndex = weekDays.indexOf(dayKey);
+
+      if (todayIndex >= 0 && dayIndex < todayIndex) {
+        return "missed";
+      }
+
+      return "pending";
+    }
+
+    function toggleDayDone(dayKey) {
+      syncWeekProgress();
+      const manualKey = `day:${dayKey}`;
+      if (progressState[manualKey] === "done") {
+        delete progressState[manualKey];
+      } else {
+        progressState[manualKey] = "done";
+      }
+      saveWeekProgress();
+      renderPlan(currentLanguage);
+    }
+
+    function toggleItemDone(dayKey, itemId) {
+      syncWeekProgress();
+      const progressKey = getItemProgressKey(dayKey, itemId);
+      if (progressState[progressKey] === "done") {
+        delete progressState[progressKey];
+      } else {
+        progressState[progressKey] = "done";
+      }
+      saveWeekProgress();
+      renderPlan(currentLanguage);
+    }
+
+    function dayListToText(dayList, t) {
+      if (!dayList.length) {
+        return t.noneLabel;
+      }
+      return dayList.map((key) => t.days[key]).join(", ");
+    }
+
+    function renderProgress(language) {
+      syncWeekProgress();
+      const t = translations[language];
+      const doneDays = [];
+      const missedDays = [];
+      const pendingDays = [];
+
+      daysTracker.innerHTML = "";
+
+      for (const key of weekDays) {
+        const status = getEffectiveStatus(key);
+        if (status === "done") doneDays.push(key);
+        if (status === "missed") missedDays.push(key);
+        if (status === "pending") pendingDays.push(key);
+
+        const dayBtn = document.createElement("button");
+        dayBtn.type = "button";
+        dayBtn.className = "track-day";
+        dayBtn.dataset.status = status;
+        dayBtn.innerHTML = `
+          <span>${t.dayShort[key]}</span>
+          <strong>${status === "done" ? "✓" : status === "missed" ? "✕" : "•"}</strong>
+        `;
+        dayBtn.setAttribute("aria-label", `${t.days[key]} - ${status}`);
+        dayBtn.addEventListener("click", () => toggleDayDone(key));
+        daysTracker.appendChild(dayBtn);
+      }
+
+      const completion = Math.round((doneDays.length / weekDays.length) * 100);
+      weekProgressBar.style.width = `${completion}%`;
+      weekProgressText.textContent = `${t.weekProgress}: ${doneDays.length}/${weekDays.length} (${completion}%)`;
+
+      const todayKey = getTodayPlanKey();
+      if (!todayKey) {
+        todayStatus.textContent = t.todayRest;
+        todayDayLabel.textContent = t.todayRestTitle;
+        todayBadge.textContent = t.statusPending;
+        todayMainLine.textContent = t.todayRest;
+        todayFocusLine.textContent = `${t.todayFocusLabel}: -`;
+        todayItemsLine.textContent = `${t.todayItemsLabel}: 0/0`;
+      } else {
+        const todayDay = getDayByKey(todayKey);
+        const todayProgress = getDayProgressCount(todayKey);
+        const todayState = getEffectiveStatus(todayKey);
+        if (todayState === "done") {
+          todayStatus.textContent = t.todayDone;
+          todayBadge.textContent = t.statusDone;
+        } else if (todayState === "missed") {
+          todayStatus.textContent = t.todayMissed;
+          todayBadge.textContent = t.statusMissed;
+        } else {
+          todayStatus.textContent = t.todayPending;
+          todayBadge.textContent = t.statusPending;
+        }
+
+        todayDayLabel.textContent = t.days[todayKey];
+        todayMainLine.textContent = todayStatus.textContent;
+        todayFocusLine.textContent = `${t.todayFocusLabel}: ${t.focuses[todayDay.focusKey]}`;
+        todayItemsLine.textContent = `${t.todayItemsLabel}: ${todayProgress.done}/${todayProgress.total}`;
+      }
+
+      doneDaysText.textContent = `${t.doneListLabel} ${dayListToText(doneDays, t)}`;
+      missingDaysText.textContent = `${t.missedListLabel} ${dayListToText(missedDays, t)}`;
+      pendingDaysText.textContent = `${t.pendingListLabel} ${dayListToText(pendingDays, t)}`;
+
+      progressTitle.textContent = t.progressTitle;
+      progressSubtitle.textContent = t.progressSubtitle;
+      resetWeekBtn.textContent = t.resetWeek;
+    }
 
     function setActiveButton(buttons, value, attr) {
       for (const button of buttons) {
@@ -855,7 +1696,12 @@
       currentTheme = theme;
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("workout-theme", theme);
-      setActiveButton(themeButtons, theme, "data-theme-choice");
+
+      const t = translations[currentLanguage] || translations.en;
+      const isDark = theme === "dark";
+      themeToggleIcon.textContent = isDark ? "☀️" : "🌙";
+      themeToggleBtn.setAttribute("aria-label", isDark ? t.themeToggleToLight : t.themeToggleToDark);
+      themeToggleBtn.title = isDark ? t.themeToggleToLight : t.themeToggleToDark;
     }
 
     function openPreview(exercise, t) {
@@ -890,11 +1736,11 @@
       document.getElementById("languageLabel").textContent = t.languageLabel;
       document.getElementById("themeLabel").textContent = t.themeLabel;
       document.getElementById("footerLine1").textContent = t.footerLine1;
-      document.getElementById("footerLine2").textContent = t.footerLine2;
-      themeButtons[0].textContent = t.themeLight;
-      themeButtons[1].textContent = t.themeDark;
+      document.getElementById("footerCredit").textContent = t.footerCredit;
       closePreviewBtn.textContent = t.closeLabel;
       previewHint.textContent = t.previewHint;
+      renderProgress(language);
+      applyTheme(currentTheme);
 
       for (const day of planData) {
         const dayCard = document.createElement("section");
@@ -904,43 +1750,98 @@
 
         const head = document.createElement("header");
         head.className = "day-head";
+        const dayStatus = getEffectiveStatus(day.key);
+        const dayProgress = getDayProgressCount(day.key);
+
         head.innerHTML = `
           <div class="day-title"><span>${dayIcons[day.key]}</span><span>${t.days[day.key]}</span></div>
-          <div class="day-focus">${t.focuses[day.focusKey]}</div>
+          <div class="day-head-right">
+            <div class="day-focus">${t.focuses[day.focusKey]}</div>
+            <div class="day-progress-mini">${dayProgress.done}/${dayProgress.total} ${t.dayItemsDone}</div>
+            <button class="complete-toggle ${dayStatus === "done" ? "is-done" : ""}" type="button" data-day-key="${day.key}">
+              ${dayStatus === "done" ? t.markUndo : t.markDone}
+            </button>
+          </div>
         `;
         dayCard.appendChild(head);
+
+        const toggleBtn = head.querySelector("[data-day-key]");
+        if (toggleBtn) {
+          toggleBtn.addEventListener("click", () => toggleDayDone(day.key));
+        }
 
         if (day.exercises) {
           const grid = document.createElement("div");
           grid.className = "exercise-grid";
 
           for (const exercise of day.exercises) {
+            const itemId = `exercise:${exercise.name}`;
+            const done = isItemDone(day.key, itemId);
+            const selectedVariant = resolveExerciseVariant(day.key, exercise);
+            const variantOptions = getExerciseOptions(exercise);
+            const optionMarkup = variantOptions
+              .map((option) => {
+                const optionLabel = t.exercises[option.name] || option.name;
+                const isSelected = option.name === selectedVariant.name ? "selected" : "";
+                return `<option value="${option.name}" ${isSelected}>${optionLabel}</option>`;
+              })
+              .join("");
             const card = document.createElement("article");
-            card.className = "exercise";
+            card.className = `exercise ${done ? "is-complete" : ""}`;
             card.tabIndex = 0;
             card.setAttribute("role", "button");
-            card.setAttribute("aria-label", `${t.exercises[exercise.name]} - ${exercise.sets}`);
+            card.setAttribute("aria-label", `${t.exercises[selectedVariant.name] || selectedVariant.name} - ${exercise.sets}`);
 
             card.innerHTML = `
               <span class="expand-hint">${t.zoomTag}</span>
               <div class="exercise-media">
-                <img src="gifs/${exercise.file}" alt="${t.exercises[exercise.name]}" onerror="showFallback(this)" />
+                <img src="gifs/${selectedVariant.file}" alt="${t.exercises[selectedVariant.name] || selectedVariant.name}" onerror="showFallback(this)" />
                 <div class="fallback">${t.fallback}</div>
               </div>
               <div class="exercise-body">
-                <div class="exercise-name">${t.exercises[exercise.name]}</div>
+                <div class="exercise-name">${t.exercises[selectedVariant.name] || selectedVariant.name}</div>
                 <div class="exercise-meta">${exercise.sets}</div>
                 ${exercise.updated ? `<div class="exercise-note">${t.updatedTag}</div>` : ""}
+                <div class="exercise-actions">
+                  <div class="variation-wrap">
+                    <label>${t.variationLabel}</label>
+                    <select class="variation-select" data-variation-select="${itemId}">
+                      ${optionMarkup}
+                    </select>
+                  </div>
+                  <button class="item-toggle ${done ? "is-done" : ""}" type="button" data-toggle-item="${itemId}">
+                    ${done ? t.markExerciseUndo : t.markExerciseDone}
+                  </button>
+                </div>
               </div>
             `;
 
-            card.addEventListener("click", () => openPreview(exercise, t));
+            card.addEventListener("click", () => openPreview({ name: selectedVariant.name, sets: exercise.sets, file: selectedVariant.file }, t));
             card.addEventListener("keydown", (event) => {
               if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
-                openPreview(exercise, t);
+                openPreview({ name: selectedVariant.name, sets: exercise.sets, file: selectedVariant.file }, t);
               }
             });
+
+            const variationSelect = card.querySelector("[data-variation-select]");
+            if (variationSelect) {
+              variationSelect.addEventListener("click", (event) => {
+                event.stopPropagation();
+              });
+              variationSelect.addEventListener("change", (event) => {
+                event.stopPropagation();
+                setExerciseVariant(day.key, exercise, variationSelect.value);
+              });
+            }
+
+            const itemToggle = card.querySelector("[data-toggle-item]");
+            if (itemToggle) {
+              itemToggle.addEventListener("click", (event) => {
+                event.stopPropagation();
+                toggleItemDone(day.key, itemId);
+              });
+            }
 
             grid.appendChild(card);
           }
@@ -952,16 +1853,29 @@
           const list = document.createElement("div");
           list.className = "cardio-list";
 
-          for (const item of day.cardio) {
+          for (let index = 0; index < day.cardio.length; index += 1) {
+            const item = day.cardio[index];
+            const itemId = `cardio:${index}`;
+            const done = isItemDone(day.key, itemId);
             const row = document.createElement("article");
-            row.className = "cardio-item";
+            row.className = `cardio-item ${done ? "is-complete" : ""}`;
             row.innerHTML = `
               <div>
                 <div class="cardio-title">${t.cardio[item.title]}</div>
                 <div class="cardio-sub">${t.cardio[item.detail]}</div>
               </div>
               <div class="duration">${t.durations[item.duration]}</div>
+              <button class="item-toggle ${done ? "is-done" : ""}" type="button" data-toggle-item="${itemId}">
+                ${done ? t.markExerciseUndo : t.markExerciseDone}
+              </button>
             `;
+
+            const itemToggle = row.querySelector("[data-toggle-item]");
+            if (itemToggle) {
+              itemToggle.addEventListener("click", () => {
+                toggleItemDone(day.key, itemId);
+              });
+            }
             list.appendChild(row);
           }
 
@@ -979,7 +1893,6 @@
       }
 
       setActiveButton(languageButtons, language, "data-lang");
-      setActiveButton(themeButtons, currentTheme, "data-theme-choice");
     }
 
     function showFallback(img) {
@@ -998,14 +1911,20 @@
       });
     }
 
-    for (const button of themeButtons) {
-      button.addEventListener("click", () => {
-        const theme = button.getAttribute("data-theme-choice");
-        applyTheme(theme);
-      });
-    }
+    themeToggleBtn.addEventListener("click", () => {
+      applyTheme(currentTheme === "dark" ? "light" : "dark");
+    });
 
     closePreviewBtn.addEventListener("click", closePreview);
+
+    resetWeekBtn.addEventListener("click", () => {
+      const t = translations[currentLanguage];
+      if (confirm(t.resetConfirm)) {
+        progressState = {};
+        saveWeekProgress();
+        renderPlan(currentLanguage);
+      }
+    });
 
     previewModal.addEventListener("click", (event) => {
       if (event.target === previewModal) {
@@ -1019,11 +1938,16 @@
       }
     });
 
+
     const storedLanguage = localStorage.getItem("workout-language");
     const initialLanguage = storedLanguage && translations[storedLanguage] ? storedLanguage : "en";
 
     const storedTheme = localStorage.getItem("workout-theme");
     const initialTheme = storedTheme === "dark" ? "dark" : "light";
+
+    currentWeekKey = getWeekKey();
+    progressState = loadWeekProgress();
+    exerciseChoices = loadExerciseChoices();
 
     applyTheme(initialTheme);
     renderPlan(initialLanguage);

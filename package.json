@@ -1,0 +1,31 @@
+{
+  "name": "app-academia",
+  "version": "1.0.0",
+  "description": "Responsive HTML workout plan with animated exercise GIFs.",
+  "main": "index.js",
+  "scripts": {
+    "build:web": "rm -rf www && mkdir -p www && cp index.html www/index.html && cp -R gifs www/gifs",
+    "cap:sync": "npm run build:web && npx cap sync android",
+    "cap:open": "npx cap open android",
+    "apk:debug": "npm run build:web && npx cap sync android && cd android && ./gradlew assembleDebug",
+    "test": "echo \"No tests configured\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabriel3510/app-academia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gabriel3510/app-academia/issues"
+  },
+  "homepage": "https://github.com/Gabriel3510/app-academia#readme",
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/core": "^6.2.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.1"
+  }
+}
