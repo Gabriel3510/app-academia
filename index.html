@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+      <div class="splash-icon">💪</div>
+      <h1 class="splash-title">Bem-vindo de volta!</h1>
+      <p class="splash-sub">Bora treinar?</p>
+      <div class="splash-bar"><div class="splash-fill" id="splashFill"></div></div>
+    </div>
+  </div>
+
   <div class="shell">
     <header class="topbar">
       <div class="brand">
@@ -91,6 +101,15 @@
   </div>
 
   <script>
+    // Splash screen — dismiss after 2.2 s (matches progress bar animation)
+    (function () {
+      const splash = document.getElementById('splashScreen');
+      if (!splash) return;
+      setTimeout(function () {
+        splash.classList.add('hidden');
+      }, 2200);
+    })();
+
     const translations = {
       en: {
         title: "💪 Weekly Workout Plan",
