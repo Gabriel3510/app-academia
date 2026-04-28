@@ -1,4 +1,4 @@
-# App Academia V1
+# App Academia V1.1
 
 Aplicativo de treino feito em HTML/CSS/JS com suporte a Android (APK) usando Capacitor.
 
@@ -23,8 +23,15 @@ Depois abra `index.html` no navegador.
 ### Requisitos
 
 - Node.js 18+
-- Java 17 com `javac`
+- Java 17 com `javac` e `JAVA_HOME` configurado
 - Android SDK configurado
+
+Exemplo Linux (ajuste conforme seu JDK):
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+```
 
 ### Comandos principais
 
@@ -37,7 +44,20 @@ APK gerado em:
 
 `android/app/build/outputs/apk/debug/app-debug.apk`
 
-## Colocar o APK no commit (recomendado)
+## Gerar APK (Release) v1.1
+
+```bash
+npm install
+npm run apk:release:v1.1
+```
+
+APK gerado em:
+
+`release/App-Academia-v1.1-release-unsigned.apk`
+
+Observacao: este APK e de release sem assinatura final para loja.
+
+## Colocar o APK de Debug no commit (opcional)
 
 Para versionar o APK no Git sem depender da pasta de build do Android:
 
@@ -51,7 +71,7 @@ Isso gera/copia para:
 
 Essa pasta `release/` e esse APK podem ser commitados normalmente.
 
-## Fluxo de atualização (passo a passo)
+## Fluxo de atualizacao (passo a passo)
 
 1. Altere o app (`index.html`, lógica, estilos etc.)
 2. Atualize GIFs se necessário:
@@ -60,10 +80,16 @@ Essa pasta `release/` e esse APK podem ser commitados normalmente.
 python3 baixar_gifs.py
 ```
 
-3. Gere APK atualizado:
+3. Gere APK atualizado (debug):
 
 ```bash
 npm run apk:commit
+```
+
+Ou gere release v1.1:
+
+```bash
+npm run apk:release:v1.1
 ```
 
 4. Commit:
@@ -79,12 +105,14 @@ git push
 ```text
 app-academia/
 |-- index.html
+|-- styles.css
 |-- baixar_gifs.py
 |-- capacitor.config.json
 |-- package.json
 |-- android/
 |-- gifs/
 `-- release/
+    |-- App-Academia-v1.1-release-unsigned.apk
     `-- App-Academia-V1-debug.apk
 ```
 
@@ -92,4 +120,4 @@ app-academia/
 
 - A pasta `android/app/build` continua ignorada no Git (correto).
 - O APK para commit fica em `release/`, não na pasta de build.
-- Para distribuição em loja (Play Store), o ideal é gerar `release` assinado.
+- Para distribuicao em loja (Play Store), o ideal e gerar release assinado.

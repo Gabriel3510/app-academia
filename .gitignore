@@ -24,6 +24,7 @@ pnpm-debug.log*
 # Local build toolchains (machine-specific)
 .android-sdk/
 .toolchain/
+.tools
 
 # Logs and temp files
 *.log
