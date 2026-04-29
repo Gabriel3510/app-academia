@@ -25,6 +25,7 @@ pnpm-debug.log*
 .android-sdk/
 .toolchain/
 .tools
+.local-jdk/
 
 # Logs and temp files
 *.log
