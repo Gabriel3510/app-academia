@@ -509,11 +509,59 @@
       gap: 8px;
     }
 
+    .day-head-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .day-progress-mini {
       font-size: 0.69rem;
       color: var(--muted);
       font-weight: 700;
       letter-spacing: 0.2px;
+    }
+
+    .collapse-toggle {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 11px;
+      font: inherit;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .collapse-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .collapse-toggle-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: color-mix(in srgb, var(--tone) 14%, white);
+      color: var(--tone);
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    .day-content[hidden] {
+      display: none;
+    }
+
+    .day-card[data-collapsed="true"] .day-head {
+      border-bottom: none;
     }
 
     .complete-toggle {
@@ -932,6 +980,21 @@
       .control-group {
         width: 100%;
         justify-content: space-between;
+      }
+
+      .day-head-right {
+        width: 100%;
+        justify-items: stretch;
+      }
+
+      .day-head-actions {
+        width: 100%;
+      }
+
+      .collapse-toggle,
+      .complete-toggle {
+        width: 100%;
+        justify-content: center;
       }
 
       .days-tracker {

@@ -154,6 +154,8 @@
         markUndo: "Undo",
         markExerciseDone: "Done",
         markExerciseUndo: "Undo",
+        expandDay: "Expand",
+        collapseDay: "Hide",
         variationLabel: "Swap",
         dayItemsDone: "done",
         days: {
@@ -271,6 +273,8 @@
         markUndo: "Desfazer",
         markExerciseDone: "Feito",
         markExerciseUndo: "Desfazer",
+        expandDay: "Expandir",
+        collapseDay: "Ocultar",
         variationLabel: "Troca",
         dayItemsDone: "feitos",
         days: {
@@ -455,6 +459,7 @@
     let currentWeekKey = "";
     let progressState = {};
     let exerciseChoices = {};
+    let collapsedDays = {};
 
     const weekDays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const todayToPlan = {
@@ -558,6 +563,23 @@
 
     function saveExerciseChoices(choices) {
       localStorage.setItem("workout-exercise-choices-v1", JSON.stringify(choices));
+    }
+
+    function loadCollapsedDays() {
+      try {
+        const raw = localStorage.getItem("workout-collapsed-days-v1");
+        if (!raw) {
+          return {};
+        }
+        const parsed = JSON.parse(raw);
+        return typeof parsed === "object" && parsed !== null ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveCollapsedDays(nextState) {
+      localStorage.setItem("workout-collapsed-days-v1", JSON.stringify(nextState));
     }
 
     function getExerciseSlotKey(dayKey, baseExerciseName) {
@@ -754,6 +776,20 @@
       renderPlan(currentLanguage);
     }
 
+    function isDayCollapsed(dayKey) {
+      return collapsedDays[dayKey] === true;
+    }
+
+    function toggleDayCollapsed(dayKey) {
+      if (isDayCollapsed(dayKey)) {
+        delete collapsedDays[dayKey];
+      } else {
+        collapsedDays[dayKey] = true;
+      }
+      saveCollapsedDays(collapsedDays);
+      renderPlan(currentLanguage);
+    }
+
     function dayListToText(dayList, t) {
       if (!dayList.length) {
         return t.noneLabel;
@@ -892,6 +928,8 @@
         dayCard.className = "day-card";
         dayCard.dataset.kind = day.kind;
         dayCard.dataset.span = day.span;
+        const collapsed = isDayCollapsed(day.key);
+        dayCard.dataset.collapsed = collapsed ? "true" : "false";
 
         const head = document.createElement("header");
         head.className = "day-head";
@@ -903,9 +941,15 @@
           <div class="day-head-right">
             <div class="day-focus">${t.focuses[day.focusKey]}</div>
             <div class="day-progress-mini">${dayProgress.done}/${dayProgress.total} ${t.dayItemsDone}</div>
-            <button class="complete-toggle ${dayStatus === "done" ? "is-done" : ""}" type="button" data-day-key="${day.key}">
-              ${dayStatus === "done" ? t.markUndo : t.markDone}
-            </button>
+            <div class="day-head-actions">
+              <button class="collapse-toggle" type="button" data-toggle-collapse="${day.key}" aria-expanded="${collapsed ? "false" : "true"}">
+                <span class="collapse-toggle-icon" aria-hidden="true">${collapsed ? "+" : "-"}</span>
+                <span>${collapsed ? t.expandDay : t.collapseDay}</span>
+              </button>
+              <button class="complete-toggle ${dayStatus === "done" ? "is-done" : ""}" type="button" data-day-key="${day.key}">
+                ${dayStatus === "done" ? t.markUndo : t.markDone}
+              </button>
+            </div>
           </div>
         `;
         dayCard.appendChild(head);
@@ -914,6 +958,15 @@
         if (toggleBtn) {
           toggleBtn.addEventListener("click", () => toggleDayDone(day.key));
         }
+
+        const collapseBtn = head.querySelector("[data-toggle-collapse]");
+        if (collapseBtn) {
+          collapseBtn.addEventListener("click", () => toggleDayCollapsed(day.key));
+        }
+
+        const content = document.createElement("div");
+        content.className = "day-content";
+        content.hidden = collapsed;
 
         if (day.exercises) {
           const grid = document.createElement("div");
@@ -991,7 +1044,7 @@
             grid.appendChild(card);
           }
 
-          dayCard.appendChild(grid);
+          content.appendChild(grid);
         }
 
         if (day.cardio) {
@@ -1024,15 +1077,17 @@
             list.appendChild(row);
           }
 
-          dayCard.appendChild(list);
+          content.appendChild(list);
         }
 
         if (day.tipKey) {
           const tip = document.createElement("div");
           tip.className = "tip";
           tip.textContent = `${t.tipLabel}: ${t.tips[day.tipKey]}`;
-          dayCard.appendChild(tip);
+          content.appendChild(tip);
         }
+
+        dayCard.appendChild(content);
 
         planRoot.appendChild(dayCard);
       }
@@ -1093,6 +1148,7 @@
     currentWeekKey = getWeekKey();
     progressState = loadWeekProgress();
     exerciseChoices = loadExerciseChoices();
+    collapsedDays = loadCollapsedDays();
 
     applyTheme(initialTheme);
     renderPlan(initialLanguage);

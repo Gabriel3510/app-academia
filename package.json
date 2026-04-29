@@ -1,6 +1,6 @@
 {
   "name": "app-academia",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Responsive HTML workout plan with animated exercise GIFs.",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "apk:release": "npm run build:web && npx cap sync android && npm run android:gradle:release",
     "apk:release:v1.1": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.1-release.apk",
     "apk:release:v1.2": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.2-release.apk",
+    "apk:release:v1.3": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.3-release.apk",
     "apk:commit": "npm run apk:debug && mkdir -p release && cp android/app/build/outputs/apk/debug/app-debug.apk release/App-Academia-V1-debug.apk",
     "test": "echo \"No tests configured\""
   },
