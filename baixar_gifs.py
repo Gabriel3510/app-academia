@@ -98,6 +98,17 @@ GIF_SOURCES = [
     ("passada.gif", urls_fp(["Dumbbell-Lunge.gif", "Walking-Lunge.gif", "Bodyweight-Lunge.gif"])),
     ("mesa-flexora.gif", urls_fp(["Lying-Leg-Curl.gif", "Seated-Leg-Curl.gif", "Leg-Curl.gif"])),
     ("arnold-press.gif", urls_fp(["Arnold-Press.gif", "Dumbbell-Arnold-Press.gif"])),
+    ("crossover-cabo.gif", urls_fp(["Cable-Crossover.gif", "High-Cable-Crossover.gif", "Standing-Cable-Fly.gif"])),
+    ("mergulho-paralela.gif", urls_fp(["Chest-Dips.gif", "Parallel-Bar-Dip.gif", "Bench-Dip.gif"])),
+    ("crucifixo-invertido.gif", urls_fp(["Reverse-Pec-Deck-Fly.gif", "Bent-Over-Dumbbell-Rear-Delt-Raise.gif", "Rear-Delt-Fly.gif"])),
+    ("face-pull.gif", urls_fp(["Face-Pull.gif", "Cable-Face-Pull.gif", "Rope-Face-Pull.gif"])),
+    ("rosca-scott.gif", urls_fp(["Preacher-Curl.gif", "Barbell-Preacher-Curl.gif", "Dumbbell-Preacher-Curl.gif"])),
+    ("hip-thrust.gif", urls_fp(["Barbell-Hip-Thrust.gif", "Hip-Thrust.gif", "Glute-Bridge.gif"])),
+    ("levantamento-romeno.gif", urls_fp(["Romanian-Deadlift.gif", "Dumbbell-Romanian-Deadlift.gif", "Stiff-Leg-Deadlift.gif"])),
+    ("panturrilha.gif", urls_fp(["Standing-Calf-Raise.gif", "Seated-Calf-Raise.gif", "Calf-Raise.gif"])),
+    ("abdominal-bicicleta.gif", urls_fp(["Bicycle-Crunch.gif", "Bicycle-Kicks.gif", "Bicycle-Sit-up.gif"])),
+    ("mountain-climber.gif", urls_fp(["Mountain-Climber.gif", "Cross-Body-Mountain-Climber.gif"])),
+    ("agachamento-bulgaro.gif", urls_fp(["Bulgarian-Split-Squat.gif", "Rear-Foot-Elevated-Split-Squat.gif", "Dumbbell-Bulgarian-Split-Squat.gif"])),
 ]
 
 
@@ -163,6 +174,15 @@ def main():
                     shutil.copyfile(source, destination)
                     size_kb = os.path.getsize(destination) // 1024
                     print(f"\r  OK   {filename} ({size_kb} KB) from local fallback remada.gif")
+                    downloaded += 1
+                    continue
+
+            if filename == "crucifixo-invertido.gif":
+                source = os.path.join(OUTPUT_DIR, "face-pull.gif")
+                if os.path.exists(source) and os.path.getsize(source) > 1000:
+                    shutil.copyfile(source, destination)
+                    size_kb = os.path.getsize(destination) // 1024
+                    print(f"\r  OK   {filename} ({size_kb} KB) from local fallback face-pull.gif")
                     downloaded += 1
                     continue
 

@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Workout Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,8 +14,8 @@
   <div class="splash-screen" id="splashScreen">
     <div class="splash-content">
       <div class="splash-icon">💪</div>
-      <h1 class="splash-title">Bem-vindo de volta!</h1>
-      <p class="splash-sub">Bora treinar?</p>
+      <h1 class="splash-title">Seu treino esta pronto</h1>
+      <p class="splash-sub">Organizando sua sessao...</p>
       <div class="splash-bar"><div class="splash-fill" id="splashFill"></div></div>
     </div>
   </div>
@@ -24,64 +27,143 @@
         <p id="appSubtitle"></p>
       </div>
 
-      <div class="controls">
-        <div class="control-group">
-          <span id="languageLabel"></span>
-          <div class="segmented" role="group" aria-label="Language selector">
-            <button class="segment-btn" type="button" data-lang="en">EN</button>
-            <button class="segment-btn" type="button" data-lang="pt">PT</button>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <span id="themeLabel"></span>
-          <div class="segmented" role="group" aria-label="Theme toggle">
-            <button class="theme-toggle" type="button" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
-              <span id="themeToggleIcon" aria-hidden="true">🌙</span>
-            </button>
-          </div>
-        </div>
+      <div class="topbar-actions">
+        <button class="menu-btn" id="openSettingsBtn" type="button" aria-haspopup="dialog" aria-controls="settingsOverlay" aria-expanded="false">
+          <span aria-hidden="true">☰</span>
+          <span id="openSettingsLabel"></span>
+        </button>
       </div>
     </header>
 
-    <section class="progress-board" id="todaySection" aria-live="polite">
-      <div class="today-strip">
-        <div class="today-top">
-          <p class="today-day" id="todayDayLabel"></p>
-          <span class="today-badge" id="todayBadge"></span>
+    <div class="settings-overlay" id="settingsOverlay" aria-hidden="true">
+      <aside class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="settings-head">
+          <strong id="settingsTitle"></strong>
+          <button class="close-btn" id="closeSettingsBtn" type="button">
+            <span id="closeSettingsLabel"></span>
+          </button>
         </div>
-        <p class="today-title" id="todayMainLine"></p>
-        <div class="today-meta">
-          <span id="todayFocusLine"></span>
-          <span id="todayItemsLine"></span>
+
+        <div class="settings-content">
+          <div class="controls">
+            <div class="control-group">
+              <span id="languageLabel"></span>
+              <div class="segmented" role="group" aria-label="Language selector">
+                <button class="segment-btn" type="button" data-lang="en">EN</button>
+                <button class="segment-btn" type="button" data-lang="pt">PT</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <span id="themeLabel"></span>
+              <div class="segmented" role="group" aria-label="Theme toggle">
+                <button class="theme-toggle" type="button" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
+                  <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <section class="progress-board" id="todaySection" aria-live="polite">
+            <div class="today-strip">
+              <div class="today-top">
+                <p class="today-day" id="todayDayLabel"></p>
+                <span class="today-badge" id="todayBadge"></span>
+              </div>
+              <p class="today-title" id="todayMainLine"></p>
+              <div class="today-meta">
+                <span id="todayFocusLine"></span>
+                <span id="todayItemsLine"></span>
+              </div>
+            </div>
+            <div class="progress-head">
+              <div class="progress-title">
+                <strong id="progressTitle"></strong>
+                <span id="progressSubtitle"></span>
+              </div>
+              <button class="reset-btn" id="resetWeekBtn" type="button"></button>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="weekProgressBar"></div>
+            </div>
+            <p class="progress-text" id="weekProgressText"></p>
+            <div class="days-tracker" id="daysTracker"></div>
+            <div class="progress-summary">
+              <p id="todayStatus"></p>
+              <p id="doneDaysText"></p>
+              <p id="missingDaysText"></p>
+              <p id="pendingDaysText"></p>
+            </div>
+          </section>
+
+          <section class="group-board" aria-live="polite">
+            <div class="group-head">
+              <div>
+                <strong id="groupTitle"></strong>
+                <p id="groupSubtitle"></p>
+              </div>
+            </div>
+            <div class="group-controls">
+              <label for="groupSelect" id="groupLabel"></label>
+              <select id="groupSelect"></select>
+              <label for="groupSwapPolicySelect" id="groupSwapPolicyLabel"></label>
+              <select id="groupSwapPolicySelect"></select>
+              <label for="groupEquipmentSelect" id="groupEquipmentLabel"></label>
+              <select id="groupEquipmentSelect"></select>
+              <label for="groupLevelSelect" id="groupLevelLabel"></label>
+              <select id="groupLevelSelect"></select>
+              <label for="groupObjectiveSelect" id="groupObjectiveLabel"></label>
+              <select id="groupObjectiveSelect"></select>
+            </div>
+            <div class="group-actions">
+              <button class="pill-btn" id="newGroupBtn" type="button"></button>
+              <button class="pill-btn" id="duplicateGroupBtn" type="button"></button>
+              <button class="pill-btn danger" id="deleteGroupBtn" type="button"></button>
+            </div>
+            <p class="group-efficiency" id="groupEfficiency"></p>
+          </section>
+
+          <footer class="footer" id="aboutSection">
+            <p id="footerLine1"></p>
+            <p id="footerCredit"></p>
+          </footer>
         </div>
-      </div>
-      <div class="progress-head">
-        <div class="progress-title">
-          <strong id="progressTitle"></strong>
-          <span id="progressSubtitle"></span>
+      </aside>
+    </div>
+
+    <div class="onboarding-modal" id="onboardingModal" aria-hidden="true">
+      <div class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
+        <div class="onboarding-head">
+          <strong id="onboardingTitle"></strong>
+          <p id="onboardingSubtitle"></p>
         </div>
-        <button class="reset-btn" id="resetWeekBtn" type="button"></button>
+        <form id="onboardingForm" class="onboarding-form">
+          <div class="onboarding-field">
+            <label for="onboardingName" id="onboardingNameLabel"></label>
+            <input id="onboardingName" type="text" maxlength="40" />
+          </div>
+          <div class="onboarding-field">
+            <label for="onboardingGoal" id="onboardingGoalLabel"></label>
+            <select id="onboardingGoal"></select>
+          </div>
+          <div class="onboarding-field">
+            <label for="onboardingLevel" id="onboardingLevelLabel"></label>
+            <select id="onboardingLevel"></select>
+          </div>
+          <div class="onboarding-field">
+            <label for="onboardingEquipment" id="onboardingEquipmentLabel"></label>
+            <select id="onboardingEquipment"></select>
+          </div>
+          <div class="onboarding-field">
+            <label for="onboardingSessions" id="onboardingSessionsLabel"></label>
+            <select id="onboardingSessions"></select>
+          </div>
+          <button class="onboarding-submit" id="onboardingSubmitBtn" type="submit"></button>
+        </form>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="weekProgressBar"></div>
-      </div>
-      <p class="progress-text" id="weekProgressText"></p>
-      <div class="days-tracker" id="daysTracker"></div>
-      <div class="progress-summary">
-        <p id="todayStatus"></p>
-        <p id="doneDaysText"></p>
-        <p id="missingDaysText"></p>
-        <p id="pendingDaysText"></p>
-      </div>
-    </section>
+    </div>
 
     <main class="grid" id="planRoot"></main>
-
-    <footer class="footer" id="aboutSection">
-      <p id="footerLine1"></p>
-      <p id="footerCredit"></p>
-    </footer>
   </div>
 
   <div class="preview-modal" id="previewModal" aria-hidden="true">
@@ -100,6 +182,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
   <script>
     // Splash screen — dismiss after 2.2 s (matches progress bar animation)
     (function () {
@@ -112,10 +195,13 @@
 
     const translations = {
       en: {
-        title: "💪 Weekly Workout Plan",
-        subtitle: "Tap any exercise to zoom the GIF",
+        title: "Training Planner",
+        subtitle: "Build consistent sessions with smart exercise swaps",
         languageLabel: "Language",
         themeLabel: "Theme",
+        menuLabel: "Menu",
+        settingsTitle: "Planner settings",
+        settingsClose: "Close",
         themeToggleToDark: "Switch to dark mode",
         themeToggleToLight: "Switch to light mode",
         themeLight: "Light",
@@ -126,8 +212,8 @@
         zoomTag: "Zoom",
         closeLabel: "Close",
         previewHint: "Click outside the panel to close",
-        footerLine1: "Consistency drives progress.",
-        footerCredit: "Developed by Gabriel Lima",
+        footerLine1: "Train with purpose. Recover with discipline.",
+        footerCredit: "Crafted by Gabriel Lima",
         progressTitle: "Weekly progress",
         progressSubtitle: "Mark each day as done",
         todayRestTitle: "Recovery day",
@@ -158,6 +244,54 @@
         collapseDay: "Hide",
         variationLabel: "Swap",
         dayItemsDone: "done",
+        groupTitle: "Training Profiles",
+        groupSubtitle: "Configure your split, equipment and goals in one place",
+        groupLabel: "Active group",
+        groupNew: "New group",
+        groupDuplicate: "Duplicate",
+        groupDelete: "Delete",
+        groupDefaultName: "My training group",
+        groupPromptName: "Group name:",
+        groupDuplicateSuffix: "Copy",
+        groupDeleteConfirm: "Do you want to delete this group?",
+        groupDeleteBlocked: "You need at least one group.",
+        groupSwapPolicyLabel: "Swap profile",
+        swapPolicyStrict: "Strict by day focus",
+        swapPolicyModerate: "Moderate (focus + support)",
+        swapPolicyFlexible: "Flexible",
+        groupEquipmentLabel: "Equipment profile",
+        equipmentGym: "Gym only",
+        equipmentHome: "Home only",
+        equipmentMixed: "Mixed",
+        groupLevelLabel: "Training level",
+        levelBeginner: "Beginner",
+        levelIntermediate: "Intermediate",
+        levelAdvanced: "Advanced",
+        groupObjectiveLabel: "Goal profile",
+        objectiveBalanced: "Balanced",
+        objectiveHypertrophy: "Hypertrophy",
+        objectiveFatloss: "Fat loss",
+        objectiveEndurance: "Endurance",
+        onboardingTitle: "Lets personalize your training",
+        onboardingSubtitle: "Answer a few quick questions to build your default training profile.",
+        onboardingNameLabel: "Your name (optional)",
+        onboardingNamePlaceholder: "Ex: Gabriel",
+        onboardingGoalLabel: "Primary goal",
+        onboardingLevelLabel: "Current level",
+        onboardingEquipmentLabel: "Where do you train?",
+        onboardingSessionsLabel: "Sessions per week",
+        onboardingStart: "Create my plan",
+        onboardingGroupSuffix: "Profile",
+        sessionsThree: "3 sessions",
+        sessionsFour: "4 sessions",
+        sessionsFive: "5 sessions",
+        groupEfficiencyLabel: "Efficiency",
+        groupEfficiencyExcellent: "Excellent balance",
+        groupEfficiencyGood: "Good balance",
+        groupEfficiencyAdjust: "Needs adjustment",
+        groupEfficiencyHintExcellent: "Great split between stimuli and recovery.",
+        groupEfficiencyHintGood: "The structure works, but there is room to refine volume/focus.",
+        groupEfficiencyHintAdjust: "Consider balancing push/pull/legs/cardio and reducing repeated focus.",
         days: {
           monday: "Monday",
           tuesday: "Tuesday",
@@ -206,7 +340,18 @@
           russianTwist: "Russian Twist",
           walkingLunge: "Walking Lunge",
           legCurl: "Leg Curl",
-          arnoldPress: "Arnold Press"
+          arnoldPress: "Arnold Press",
+          cableCrossover: "Cable Crossover",
+          chestDip: "Chest Dip",
+          reverseFly: "Reverse Fly",
+          facePull: "Face Pull",
+          preacherCurl: "Preacher Curl",
+          hipThrust: "Hip Thrust",
+          romanianDeadlift: "Romanian Deadlift",
+          calfRaise: "Calf Raise",
+          bicycleCrunch: "Bicycle Crunch",
+          mountainClimber: "Mountain Climber",
+          bulgarianSplitSquat: "Bulgarian Split Squat"
         },
         cardio: {
           treadmill: "Treadmill",
@@ -231,10 +376,13 @@
         }
       },
       pt: {
-        title: "💪 Plano de Treino Semanal",
-        subtitle: "Toque em qualquer exercicio para ampliar o GIF",
+        title: "Planejador de Treino",
+        subtitle: "Monte sessoes consistentes com trocas inteligentes",
         languageLabel: "Idioma",
         themeLabel: "Tema",
+        menuLabel: "Menu",
+        settingsTitle: "Configuracoes",
+        settingsClose: "Fechar",
         themeToggleToDark: "Mudar para modo escuro",
         themeToggleToLight: "Mudar para modo claro",
         themeLight: "Claro",
@@ -245,7 +393,7 @@
         zoomTag: "Zoom",
         closeLabel: "Fechar",
         previewHint: "Clique fora do painel para fechar",
-        footerLine1: "Consistencia e a chave do progresso.",
+        footerLine1: "Treine com intencao. Recupere com disciplina.",
         footerCredit: "Desenvolvido por Gabriel Lima",
         progressTitle: "Progresso semanal",
         progressSubtitle: "Marque cada dia como concluido",
@@ -277,6 +425,54 @@
         collapseDay: "Ocultar",
         variationLabel: "Troca",
         dayItemsDone: "feitos",
+        groupTitle: "Perfis de Treino",
+        groupSubtitle: "Configure divisao, equipamento e objetivo em um so lugar",
+        groupLabel: "Grupo ativo",
+        groupNew: "Novo grupo",
+        groupDuplicate: "Duplicar",
+        groupDelete: "Excluir",
+        groupDefaultName: "Meu grupo de treino",
+        groupPromptName: "Nome do grupo:",
+        groupDuplicateSuffix: "Copia",
+        groupDeleteConfirm: "Deseja excluir este grupo?",
+        groupDeleteBlocked: "Voce precisa manter pelo menos um grupo.",
+        groupSwapPolicyLabel: "Perfil de troca",
+        swapPolicyStrict: "Estrito por foco do dia",
+        swapPolicyModerate: "Moderado (foco + suporte)",
+        swapPolicyFlexible: "Flexivel",
+        groupEquipmentLabel: "Perfil de equipamento",
+        equipmentGym: "Somente academia",
+        equipmentHome: "Somente casa",
+        equipmentMixed: "Misto",
+        groupLevelLabel: "Nivel de treino",
+        levelBeginner: "Iniciante",
+        levelIntermediate: "Intermediario",
+        levelAdvanced: "Avancado",
+        groupObjectiveLabel: "Perfil de objetivo",
+        objectiveBalanced: "Equilibrado",
+        objectiveHypertrophy: "Hipertrofia",
+        objectiveFatloss: "Emagrecimento",
+        objectiveEndurance: "Resistencia",
+        onboardingTitle: "Vamos personalizar seu treino",
+        onboardingSubtitle: "Responda algumas perguntas rapidas para montar seu perfil inicial.",
+        onboardingNameLabel: "Seu nome (opcional)",
+        onboardingNamePlaceholder: "Ex: Gabriel",
+        onboardingGoalLabel: "Objetivo principal",
+        onboardingLevelLabel: "Nivel atual",
+        onboardingEquipmentLabel: "Onde voce treina?",
+        onboardingSessionsLabel: "Sessoes por semana",
+        onboardingStart: "Criar meu plano",
+        onboardingGroupSuffix: "Perfil",
+        sessionsThree: "3 sessoes",
+        sessionsFour: "4 sessoes",
+        sessionsFive: "5 sessoes",
+        groupEfficiencyLabel: "Eficiencia",
+        groupEfficiencyExcellent: "Excelente equilibrio",
+        groupEfficiencyGood: "Bom equilibrio",
+        groupEfficiencyAdjust: "Precisa ajustar",
+        groupEfficiencyHintExcellent: "Boa divisao entre estimulo e recuperacao.",
+        groupEfficiencyHintGood: "A estrutura funciona, mas ainda da para refinar volume/foco.",
+        groupEfficiencyHintAdjust: "Equilibre push/pull/pernas/cardio e evite repetir foco pesado em sequencia.",
         days: {
           monday: "Segunda-feira",
           tuesday: "Terca-feira",
@@ -325,7 +521,18 @@
           russianTwist: "Russian twist",
           walkingLunge: "Passada andando",
           legCurl: "Mesa flexora",
-          arnoldPress: "Arnold press"
+          arnoldPress: "Arnold press",
+          cableCrossover: "Crossover na polia",
+          chestDip: "Mergulho nas paralelas",
+          reverseFly: "Crucifixo invertido",
+          facePull: "Face pull",
+          preacherCurl: "Rosca scott",
+          hipThrust: "Hip thrust",
+          romanianDeadlift: "Levantamento romeno",
+          calfRaise: "Elevacao de panturrilha",
+          bicycleCrunch: "Abdominal bicicleta",
+          mountainClimber: "Mountain climber",
+          bulgarianSplitSquat: "Agachamento bulgaro"
         },
         cardio: {
           treadmill: "Esteira",
@@ -359,7 +566,7 @@
       friday: "🚴"
     };
 
-    const planData = [
+    const basePlanData = [
       {
         key: "monday",
         kind: "cardio",
@@ -428,9 +635,46 @@
     ];
 
     const planRoot = document.getElementById("planRoot");
+    const groupTitle = document.getElementById("groupTitle");
+    const groupSubtitle = document.getElementById("groupSubtitle");
+    const groupLabel = document.getElementById("groupLabel");
+    const groupSelect = document.getElementById("groupSelect");
+    const groupSwapPolicyLabel = document.getElementById("groupSwapPolicyLabel");
+    const groupSwapPolicySelect = document.getElementById("groupSwapPolicySelect");
+    const groupEquipmentLabel = document.getElementById("groupEquipmentLabel");
+    const groupEquipmentSelect = document.getElementById("groupEquipmentSelect");
+    const groupLevelLabel = document.getElementById("groupLevelLabel");
+    const groupLevelSelect = document.getElementById("groupLevelSelect");
+    const groupObjectiveLabel = document.getElementById("groupObjectiveLabel");
+    const groupObjectiveSelect = document.getElementById("groupObjectiveSelect");
+    const newGroupBtn = document.getElementById("newGroupBtn");
+    const duplicateGroupBtn = document.getElementById("duplicateGroupBtn");
+    const deleteGroupBtn = document.getElementById("deleteGroupBtn");
+    const groupEfficiency = document.getElementById("groupEfficiency");
     const languageButtons = [...document.querySelectorAll("[data-lang]")];
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     const themeToggleIcon = document.getElementById("themeToggleIcon");
+    const openSettingsBtn = document.getElementById("openSettingsBtn");
+    const openSettingsLabel = document.getElementById("openSettingsLabel");
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const settingsTitle = document.getElementById("settingsTitle");
+    const closeSettingsBtn = document.getElementById("closeSettingsBtn");
+    const closeSettingsLabel = document.getElementById("closeSettingsLabel");
+    const onboardingModal = document.getElementById("onboardingModal");
+    const onboardingForm = document.getElementById("onboardingForm");
+    const onboardingTitle = document.getElementById("onboardingTitle");
+    const onboardingSubtitle = document.getElementById("onboardingSubtitle");
+    const onboardingNameLabel = document.getElementById("onboardingNameLabel");
+    const onboardingName = document.getElementById("onboardingName");
+    const onboardingGoalLabel = document.getElementById("onboardingGoalLabel");
+    const onboardingGoal = document.getElementById("onboardingGoal");
+    const onboardingLevelLabel = document.getElementById("onboardingLevelLabel");
+    const onboardingLevel = document.getElementById("onboardingLevel");
+    const onboardingEquipmentLabel = document.getElementById("onboardingEquipmentLabel");
+    const onboardingEquipment = document.getElementById("onboardingEquipment");
+    const onboardingSessionsLabel = document.getElementById("onboardingSessionsLabel");
+    const onboardingSessions = document.getElementById("onboardingSessions");
+    const onboardingSubmitBtn = document.getElementById("onboardingSubmitBtn");
 
     const previewModal = document.getElementById("previewModal");
     const previewImage = document.getElementById("previewImage");
@@ -460,6 +704,10 @@
     let progressState = {};
     let exerciseChoices = {};
     let collapsedDays = {};
+    let workoutGroups = [];
+    let activeGroupId = "";
+    let exerciseSortables = [];
+    let onboardingProfile = null;
 
     const weekDays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const todayToPlan = {
@@ -474,79 +722,1053 @@
       benchPress: [
         { name: "benchPress", file: "supino.gif" },
         { name: "inclineBenchPress", file: "supino-inclinado.gif" },
-        { name: "pushUps", file: "flexao.gif" }
+        { name: "pushUps", file: "flexao.gif" },
+        { name: "pecDeck", file: "peck-deck.gif" },
+        { name: "machineFly", file: "crucifixo.gif" },
+        { name: "cableCrossover", file: "crossover-cabo.gif" },
+        { name: "chestDip", file: "mergulho-paralela.gif" }
       ],
       machineFly: [
         { name: "machineFly", file: "crucifixo.gif" },
-        { name: "pecDeck", file: "peck-deck.gif" }
+        { name: "pecDeck", file: "peck-deck.gif" },
+        { name: "benchPress", file: "supino.gif" },
+        { name: "inclineBenchPress", file: "supino-inclinado.gif" },
+        { name: "pushUps", file: "flexao.gif" },
+        { name: "cableCrossover", file: "crossover-cabo.gif" },
+        { name: "reverseFly", file: "crucifixo-invertido.gif" }
       ],
       tricepsPushdown: [
         { name: "tricepsPushdown", file: "triceps-polia.gif" },
-        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" }
+        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" },
+        { name: "lyingTricepsExtension", file: "triceps-frances.gif" },
+        { name: "pushUps", file: "flexao.gif" },
+        { name: "chestDip", file: "mergulho-paralela.gif" }
       ],
       lyingTricepsExtension: [
         { name: "lyingTricepsExtension", file: "triceps-frances.gif" },
         { name: "tricepsPushdown", file: "triceps-polia.gif" },
-        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" }
+        { name: "overheadTricepsExtension", file: "triceps-overhead.gif" },
+        { name: "pushUps", file: "flexao.gif" },
+        { name: "chestDip", file: "mergulho-paralela.gif" }
       ],
       plank: [
         { name: "plank", file: "prancha.gif" },
-        { name: "deadBug", file: "dead-bug.gif" }
+        { name: "deadBug", file: "dead-bug.gif" },
+        { name: "sidePlank", file: "prancha-lateral.gif" },
+        { name: "crunch", file: "abdominal.gif" },
+        { name: "legRaise", file: "elevacao-pernas.gif" },
+        { name: "mountainClimber", file: "mountain-climber.gif" }
       ],
       crunch: [
         { name: "crunch", file: "abdominal.gif" },
         { name: "russianTwist", file: "russian-twist.gif" },
-        { name: "deadBug", file: "dead-bug.gif" }
+        { name: "deadBug", file: "dead-bug.gif" },
+        { name: "legRaise", file: "elevacao-pernas.gif" },
+        { name: "plank", file: "prancha.gif" },
+        { name: "sidePlank", file: "prancha-lateral.gif" },
+        { name: "bicycleCrunch", file: "abdominal-bicicleta.gif" },
+        { name: "mountainClimber", file: "mountain-climber.gif" }
       ],
       latPulldown: [
         { name: "latPulldown", file: "puxada.gif" },
-        { name: "assistedPullUp", file: "barra-assistida.gif" }
+        { name: "assistedPullUp", file: "barra-assistida.gif" },
+        { name: "seatedRow", file: "remada.gif" },
+        { name: "oneArmDumbbellRow", file: "remada-unilateral.gif" },
+        { name: "reverseFly", file: "crucifixo-invertido.gif" },
+        { name: "facePull", file: "face-pull.gif" }
       ],
       seatedRow: [
         { name: "seatedRow", file: "remada.gif" },
-        { name: "oneArmDumbbellRow", file: "remada-unilateral.gif" }
+        { name: "oneArmDumbbellRow", file: "remada-unilateral.gif" },
+        { name: "latPulldown", file: "puxada.gif" },
+        { name: "assistedPullUp", file: "barra-assistida.gif" },
+        { name: "reverseFly", file: "crucifixo-invertido.gif" },
+        { name: "facePull", file: "face-pull.gif" }
       ],
       dumbbellCurl: [
         { name: "dumbbellCurl", file: "biceps-halteres.gif" },
-        { name: "hammerCurl", file: "rosca-martelo.gif" }
+        { name: "hammerCurl", file: "rosca-martelo.gif" },
+        { name: "barbellCurl", file: "biceps-barra.gif" },
+        { name: "assistedPullUp", file: "barra-assistida.gif" },
+        { name: "preacherCurl", file: "rosca-scott.gif" }
       ],
       barbellCurl: [
         { name: "barbellCurl", file: "biceps-barra.gif" },
         { name: "dumbbellCurl", file: "biceps-halteres.gif" },
-        { name: "hammerCurl", file: "rosca-martelo.gif" }
+        { name: "hammerCurl", file: "rosca-martelo.gif" },
+        { name: "assistedPullUp", file: "barra-assistida.gif" },
+        { name: "preacherCurl", file: "rosca-scott.gif" }
       ],
       legRaise: [
         { name: "legRaise", file: "elevacao-pernas.gif" },
-        { name: "russianTwist", file: "russian-twist.gif" }
+        { name: "russianTwist", file: "russian-twist.gif" },
+        { name: "crunch", file: "abdominal.gif" },
+        { name: "deadBug", file: "dead-bug.gif" },
+        { name: "plank", file: "prancha.gif" },
+        { name: "bicycleCrunch", file: "abdominal-bicicleta.gif" }
       ],
       sidePlank: [
         { name: "sidePlank", file: "prancha-lateral.gif" },
         { name: "plank", file: "prancha.gif" },
-        { name: "deadBug", file: "dead-bug.gif" }
+        { name: "deadBug", file: "dead-bug.gif" },
+        { name: "russianTwist", file: "russian-twist.gif" },
+        { name: "legRaise", file: "elevacao-pernas.gif" },
+        { name: "mountainClimber", file: "mountain-climber.gif" }
       ],
       gobletSquat: [
         { name: "gobletSquat", file: "goblet-squat.gif" },
-        { name: "walkingLunge", file: "passada.gif" }
+        { name: "walkingLunge", file: "passada.gif" },
+        { name: "legPress", file: "leg-press.gif" },
+        { name: "legExtension", file: "extensao-pernas.gif" },
+        { name: "legCurl", file: "mesa-flexora.gif" },
+        { name: "bulgarianSplitSquat", file: "agachamento-bulgaro.gif" },
+        { name: "romanianDeadlift", file: "levantamento-romeno.gif" },
+        { name: "hipThrust", file: "hip-thrust.gif" }
       ],
       legPress: [
         { name: "legPress", file: "leg-press.gif" },
         { name: "gobletSquat", file: "goblet-squat.gif" },
-        { name: "walkingLunge", file: "passada.gif" }
+        { name: "walkingLunge", file: "passada.gif" },
+        { name: "legExtension", file: "extensao-pernas.gif" },
+        { name: "legCurl", file: "mesa-flexora.gif" },
+        { name: "bulgarianSplitSquat", file: "agachamento-bulgaro.gif" },
+        { name: "romanianDeadlift", file: "levantamento-romeno.gif" },
+        { name: "calfRaise", file: "panturrilha.gif" }
       ],
       legExtension: [
         { name: "legExtension", file: "extensao-pernas.gif" },
-        { name: "legCurl", file: "mesa-flexora.gif" }
+        { name: "legCurl", file: "mesa-flexora.gif" },
+        { name: "legPress", file: "leg-press.gif" },
+        { name: "gobletSquat", file: "goblet-squat.gif" },
+        { name: "walkingLunge", file: "passada.gif" },
+        { name: "bulgarianSplitSquat", file: "agachamento-bulgaro.gif" },
+        { name: "calfRaise", file: "panturrilha.gif" }
       ],
       lateralRaise: [
         { name: "lateralRaise", file: "elevacao-lateral.gif" },
         { name: "shoulderPress", file: "desenvolvimento-ombro.gif" },
-        { name: "arnoldPress", file: "arnold-press.gif" }
+        { name: "arnoldPress", file: "arnold-press.gif" },
+        { name: "oneArmDumbbellRow", file: "remada-unilateral.gif" },
+        { name: "facePull", file: "face-pull.gif" },
+        { name: "reverseFly", file: "crucifixo-invertido.gif" }
       ],
       shoulderPress: [
         { name: "shoulderPress", file: "desenvolvimento-ombro.gif" },
-        { name: "arnoldPress", file: "arnold-press.gif" }
+        { name: "arnoldPress", file: "arnold-press.gif" },
+        { name: "lateralRaise", file: "elevacao-lateral.gif" },
+        { name: "pushUps", file: "flexao.gif" },
+        { name: "facePull", file: "face-pull.gif" },
+        { name: "reverseFly", file: "crucifixo-invertido.gif" }
       ]
     };
+
+    const exerciseFamilies = {
+      benchPress: ["push"],
+      inclineBenchPress: ["push"],
+      machineFly: ["push"],
+      pecDeck: ["push"],
+      cableCrossover: ["push"],
+      pushUps: ["push"],
+      chestDip: ["push", "triceps"],
+      tricepsPushdown: ["triceps", "push"],
+      lyingTricepsExtension: ["triceps", "push"],
+      overheadTricepsExtension: ["triceps", "push"],
+
+      latPulldown: ["pull"],
+      seatedRow: ["pull"],
+      oneArmDumbbellRow: ["pull"],
+      assistedPullUp: ["pull"],
+      reverseFly: ["pull", "shoulders"],
+      facePull: ["pull", "shoulders"],
+      dumbbellCurl: ["biceps", "pull"],
+      barbellCurl: ["biceps", "pull"],
+      hammerCurl: ["biceps", "pull"],
+      preacherCurl: ["biceps", "pull"],
+
+      gobletSquat: ["legs"],
+      legPress: ["legs"],
+      legExtension: ["legs"],
+      legCurl: ["legs"],
+      walkingLunge: ["legs"],
+      bulgarianSplitSquat: ["legs"],
+      romanianDeadlift: ["legs", "posterior"],
+      hipThrust: ["legs", "posterior"],
+      calfRaise: ["legs", "calves"],
+
+      lateralRaise: ["shoulders", "push"],
+      shoulderPress: ["shoulders", "push"],
+      arnoldPress: ["shoulders", "push"],
+
+      plank: ["core"],
+      sidePlank: ["core"],
+      deadBug: ["core"],
+      crunch: ["core"],
+      legRaise: ["core"],
+      russianTwist: ["core"],
+      bicycleCrunch: ["core"],
+      mountainClimber: ["core", "cardio"]
+    };
+
+    const swapPolicyRules = {
+      strict: {
+        push: ["push", "triceps", "shoulders"],
+        pull: ["pull", "biceps"],
+        legs: ["legs", "posterior", "calves"],
+        cardio: ["cardio", "core"]
+      },
+      moderate: {
+        push: ["push", "triceps", "shoulders", "core"],
+        pull: ["pull", "biceps", "shoulders", "core"],
+        legs: ["legs", "posterior", "calves", "core"],
+        cardio: ["cardio", "core", "legs"]
+      },
+      flexible: {
+        push: ["push", "triceps", "shoulders", "core", "pull", "biceps", "legs", "posterior", "calves", "cardio"],
+        pull: ["push", "triceps", "shoulders", "core", "pull", "biceps", "legs", "posterior", "calves", "cardio"],
+        legs: ["push", "triceps", "shoulders", "core", "pull", "biceps", "legs", "posterior", "calves", "cardio"],
+        cardio: ["push", "triceps", "shoulders", "core", "pull", "biceps", "legs", "posterior", "calves", "cardio"]
+      }
+    };
+
+    const exerciseEquipment = {
+      benchPress: ["gym"],
+      inclineBenchPress: ["gym"],
+      machineFly: ["gym"],
+      pecDeck: ["gym"],
+      cableCrossover: ["gym"],
+      tricepsPushdown: ["gym"],
+      lyingTricepsExtension: ["gym", "home"],
+      overheadTricepsExtension: ["gym", "home"],
+      pushUps: ["home", "gym"],
+      chestDip: ["gym", "home"],
+
+      latPulldown: ["gym"],
+      seatedRow: ["gym"],
+      oneArmDumbbellRow: ["home", "gym"],
+      assistedPullUp: ["gym"],
+      reverseFly: ["home", "gym"],
+      facePull: ["gym"],
+      dumbbellCurl: ["home", "gym"],
+      barbellCurl: ["home", "gym"],
+      hammerCurl: ["home", "gym"],
+      preacherCurl: ["gym"],
+
+      gobletSquat: ["home", "gym"],
+      walkingLunge: ["home", "gym"],
+      legPress: ["gym"],
+      legExtension: ["gym"],
+      legCurl: ["gym"],
+      bulgarianSplitSquat: ["home", "gym"],
+      romanianDeadlift: ["home", "gym"],
+      hipThrust: ["home", "gym"],
+      calfRaise: ["home", "gym"],
+
+      lateralRaise: ["home", "gym"],
+      shoulderPress: ["home", "gym"],
+      arnoldPress: ["home", "gym"],
+
+      plank: ["home", "gym"],
+      sidePlank: ["home", "gym"],
+      deadBug: ["home", "gym"],
+      crunch: ["home", "gym"],
+      legRaise: ["home", "gym"],
+      russianTwist: ["home", "gym"],
+      bicycleCrunch: ["home", "gym"],
+      mountainClimber: ["home", "gym"]
+    };
+
+    const exerciseLevels = {
+      benchPress: "intermediate",
+      inclineBenchPress: "intermediate",
+      machineFly: "beginner",
+      pecDeck: "beginner",
+      cableCrossover: "intermediate",
+      tricepsPushdown: "beginner",
+      lyingTricepsExtension: "intermediate",
+      overheadTricepsExtension: "intermediate",
+      pushUps: "beginner",
+      chestDip: "advanced",
+
+      latPulldown: "beginner",
+      seatedRow: "beginner",
+      oneArmDumbbellRow: "intermediate",
+      assistedPullUp: "intermediate",
+      reverseFly: "intermediate",
+      facePull: "intermediate",
+      dumbbellCurl: "beginner",
+      barbellCurl: "intermediate",
+      hammerCurl: "beginner",
+      preacherCurl: "intermediate",
+
+      gobletSquat: "beginner",
+      walkingLunge: "beginner",
+      legPress: "beginner",
+      legExtension: "beginner",
+      legCurl: "beginner",
+      bulgarianSplitSquat: "advanced",
+      romanianDeadlift: "advanced",
+      hipThrust: "intermediate",
+      calfRaise: "beginner",
+
+      lateralRaise: "beginner",
+      shoulderPress: "intermediate",
+      arnoldPress: "intermediate",
+
+      plank: "beginner",
+      sidePlank: "intermediate",
+      deadBug: "beginner",
+      crunch: "beginner",
+      legRaise: "intermediate",
+      russianTwist: "intermediate",
+      bicycleCrunch: "intermediate",
+      mountainClimber: "intermediate"
+    };
+
+    const levelOrder = {
+      beginner: 1,
+      intermediate: 2,
+      advanced: 3
+    };
+
+    const exerciseObjectives = {
+      benchPress: ["hypertrophy"],
+      inclineBenchPress: ["hypertrophy"],
+      machineFly: ["hypertrophy"],
+      pecDeck: ["hypertrophy"],
+      cableCrossover: ["hypertrophy"],
+      tricepsPushdown: ["hypertrophy"],
+      lyingTricepsExtension: ["hypertrophy"],
+      overheadTricepsExtension: ["hypertrophy"],
+      chestDip: ["hypertrophy", "endurance"],
+
+      latPulldown: ["hypertrophy"],
+      seatedRow: ["hypertrophy"],
+      oneArmDumbbellRow: ["hypertrophy"],
+      assistedPullUp: ["hypertrophy", "endurance"],
+      reverseFly: ["hypertrophy"],
+      facePull: ["hypertrophy", "endurance"],
+      dumbbellCurl: ["hypertrophy"],
+      barbellCurl: ["hypertrophy"],
+      hammerCurl: ["hypertrophy"],
+      preacherCurl: ["hypertrophy"],
+
+      gobletSquat: ["hypertrophy", "fatloss"],
+      walkingLunge: ["hypertrophy", "fatloss", "endurance"],
+      legPress: ["hypertrophy"],
+      legExtension: ["hypertrophy"],
+      legCurl: ["hypertrophy"],
+      bulgarianSplitSquat: ["hypertrophy", "fatloss"],
+      romanianDeadlift: ["hypertrophy"],
+      hipThrust: ["hypertrophy"],
+      calfRaise: ["hypertrophy", "endurance"],
+
+      lateralRaise: ["hypertrophy"],
+      shoulderPress: ["hypertrophy"],
+      arnoldPress: ["hypertrophy"],
+
+      pushUps: ["fatloss", "endurance"],
+      plank: ["fatloss", "endurance"],
+      sidePlank: ["fatloss", "endurance"],
+      deadBug: ["fatloss", "endurance"],
+      crunch: ["fatloss", "endurance"],
+      legRaise: ["fatloss", "endurance"],
+      russianTwist: ["fatloss", "endurance"],
+      bicycleCrunch: ["fatloss", "endurance"],
+      mountainClimber: ["fatloss", "endurance"]
+    };
+
+    function clonePlan(plan) {
+      return JSON.parse(JSON.stringify(plan));
+    }
+
+    function loadWorkoutGroups() {
+      try {
+        const raw = localStorage.getItem("workout-groups-v1");
+        if (!raw) {
+          return [];
+        }
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) {
+          return [];
+        }
+        return parsed.filter((group) => {
+          return group && typeof group.id === "string" && typeof group.name === "string" && Array.isArray(group.plan);
+        }).map((group) => ({
+          ...group,
+          swapPolicy: normalizeSwapPolicy(group.swapPolicy),
+          equipmentProfile: normalizeEquipmentProfile(group.equipmentProfile),
+          levelProfile: normalizeLevelProfile(group.levelProfile),
+          objectiveProfile: normalizeObjectiveProfile(group.objectiveProfile)
+        }));
+      } catch {
+        return [];
+      }
+    }
+
+    function normalizeSwapPolicy(policy) {
+      if (policy === "strict" || policy === "moderate" || policy === "flexible") {
+        return policy;
+      }
+      return "moderate";
+    }
+
+    function normalizeEquipmentProfile(profile) {
+      if (profile === "gym" || profile === "home" || profile === "mixed") {
+        return profile;
+      }
+      return "mixed";
+    }
+
+    function normalizeLevelProfile(level) {
+      if (level === "beginner" || level === "intermediate" || level === "advanced") {
+        return level;
+      }
+      return "intermediate";
+    }
+
+    function normalizeObjectiveProfile(profile) {
+      if (profile === "balanced" || profile === "hypertrophy" || profile === "fatloss" || profile === "endurance") {
+        return profile;
+      }
+      return "balanced";
+    }
+
+    function normalizeSessionsWeekly(value) {
+      const parsed = Number(value);
+      if (parsed === 3 || parsed === 4 || parsed === 5) {
+        return parsed;
+      }
+      return 4;
+    }
+
+    function loadOnboardingProfile() {
+      try {
+        const raw = localStorage.getItem("workout-onboarding-v1");
+        if (!raw) {
+          return null;
+        }
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") {
+          return null;
+        }
+        return {
+          name: typeof parsed.name === "string" ? parsed.name : "",
+          objectiveProfile: normalizeObjectiveProfile(parsed.objectiveProfile),
+          levelProfile: normalizeLevelProfile(parsed.levelProfile),
+          equipmentProfile: normalizeEquipmentProfile(parsed.equipmentProfile),
+          sessionsWeekly: normalizeSessionsWeekly(parsed.sessionsWeekly)
+        };
+      } catch {
+        return null;
+      }
+    }
+
+    function saveOnboardingProfile(profile) {
+      localStorage.setItem("workout-onboarding-v1", JSON.stringify(profile));
+    }
+
+    function chooseExerciseByFilters(dayKey, baseExercise, profile) {
+      const candidates = [
+        { name: baseExercise.name, file: baseExercise.file },
+        ...(exerciseVariants[baseExercise.name] || [])
+      ];
+
+      const seen = new Set();
+      const uniqueCandidates = candidates.filter((candidate) => {
+        if (seen.has(candidate.name)) {
+          return false;
+        }
+        seen.add(candidate.name);
+        return true;
+      });
+
+      const allowedByEquipment = uniqueCandidates.filter((candidate) => {
+        if (profile.equipmentProfile === "mixed") {
+          return true;
+        }
+        const equipment = exerciseEquipment[candidate.name] || ["home", "gym"];
+        return equipment.includes(profile.equipmentProfile);
+      });
+
+      const objectiveFiltered = allowedByEquipment.filter((candidate) => {
+        if (profile.objectiveProfile === "balanced") {
+          return true;
+        }
+        const tags = exerciseObjectives[candidate.name] || ["hypertrophy", "fatloss", "endurance"];
+        return tags.includes(profile.objectiveProfile);
+      });
+
+      const dayFiltered = objectiveFiltered.filter((candidate) => {
+        const families = exerciseFamilies[candidate.name] || [];
+        const allowedFamilies = getAllowedFamiliesForDay(dayKey);
+        if (!families.length) {
+          return true;
+        }
+        return families.some((family) => allowedFamilies.has(family));
+      });
+
+      return dayFiltered[0] || objectiveFiltered[0] || allowedByEquipment[0] || uniqueCandidates[0];
+    }
+
+    function adjustSetsByLevel(sets, level) {
+      const match = sets.match(/^(\d+)\s*x\s*(.+)$/i);
+      if (!match) {
+        return sets;
+      }
+      const amount = Number(match[1]);
+      const detail = match[2];
+      if (level === "beginner") {
+        return `${Math.max(2, amount - 1)} x ${detail}`;
+      }
+      if (level === "advanced") {
+        return `${amount + 1} x ${detail}`;
+      }
+      return sets;
+    }
+
+    function adjustSetsByGoal(sets, objective) {
+      if (objective === "fatloss" || objective === "endurance") {
+        return sets
+          .replace("10-12", "12-15")
+          .replace("3 x 10", "3 x 12-15")
+          .replace("3 x 12", "3 x 15")
+          .replace("30-60s", "45-75s");
+      }
+      if (objective === "hypertrophy") {
+        return sets
+          .replace("12-15", "8-12")
+          .replace("3 x 15", "4 x 10-12");
+      }
+      return sets;
+    }
+
+    function buildPersonalizedPlan(profile) {
+      const personalizedPlan = clonePlan(basePlanData);
+      for (const day of personalizedPlan) {
+        if (!Array.isArray(day.exercises)) {
+          continue;
+        }
+
+        for (const exercise of day.exercises) {
+          const chosen = chooseExerciseByFilters(day.key, exercise, profile);
+          exercise.name = chosen.name;
+          exercise.file = chosen.file;
+          exercise.sets = adjustSetsByGoal(adjustSetsByLevel(exercise.sets, profile.levelProfile), profile.objectiveProfile);
+        }
+
+        if ((profile.objectiveProfile === "fatloss" || profile.objectiveProfile === "endurance") && day.kind !== "cardio") {
+          const hasConditioning = day.exercises.some((exercise) => exercise.name === "mountainClimber");
+          if (!hasConditioning) {
+            day.exercises.push({
+              name: "mountainClimber",
+              sets: profile.objectiveProfile === "endurance" ? "4 x 40s" : "3 x 30-45s",
+              file: "mountain-climber.gif"
+            });
+          }
+        }
+      }
+
+      return personalizedPlan;
+    }
+
+    function applySessionsVisibility(sessionsWeekly) {
+      const activeDaysBySession = {
+        3: ["monday", "wednesday", "friday"],
+        4: ["monday", "tuesday", "thursday", "friday"],
+        5: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+      };
+
+      const activeDays = new Set(activeDaysBySession[sessionsWeekly] || activeDaysBySession[4]);
+      collapsedDays = {};
+      for (const dayKey of weekDays) {
+        if (!activeDays.has(dayKey)) {
+          collapsedDays[dayKey] = true;
+        }
+      }
+      saveCollapsedDays(collapsedDays);
+    }
+
+    function applyOnboardingProfile(profile) {
+      onboardingProfile = {
+        name: (profile.name || "").trim(),
+        objectiveProfile: normalizeObjectiveProfile(profile.objectiveProfile),
+        levelProfile: normalizeLevelProfile(profile.levelProfile),
+        equipmentProfile: normalizeEquipmentProfile(profile.equipmentProfile),
+        sessionsWeekly: normalizeSessionsWeekly(profile.sessionsWeekly)
+      };
+
+      const t = translations[currentLanguage] || translations.en;
+      const displayName = onboardingProfile.name || t.groupDefaultName;
+      const personalizedGroup = {
+        id: `group-onboarding-${Date.now()}`,
+        name: `${displayName} ${t.onboardingGroupSuffix}`,
+        plan: buildPersonalizedPlan(onboardingProfile),
+        swapPolicy: "moderate",
+        equipmentProfile: onboardingProfile.equipmentProfile,
+        levelProfile: onboardingProfile.levelProfile,
+        objectiveProfile: onboardingProfile.objectiveProfile
+      };
+
+      workoutGroups = [personalizedGroup];
+      activeGroupId = personalizedGroup.id;
+      applySessionsVisibility(onboardingProfile.sessionsWeekly);
+      saveOnboardingProfile(onboardingProfile);
+      saveWorkoutGroups();
+    }
+
+    function updateOnboardingText(language) {
+      const t = translations[language];
+      onboardingTitle.textContent = t.onboardingTitle;
+      onboardingSubtitle.textContent = t.onboardingSubtitle;
+      onboardingNameLabel.textContent = t.onboardingNameLabel;
+      onboardingName.placeholder = t.onboardingNamePlaceholder;
+      onboardingGoalLabel.textContent = t.onboardingGoalLabel;
+      onboardingLevelLabel.textContent = t.onboardingLevelLabel;
+      onboardingEquipmentLabel.textContent = t.onboardingEquipmentLabel;
+      onboardingSessionsLabel.textContent = t.onboardingSessionsLabel;
+      onboardingSubmitBtn.textContent = t.onboardingStart;
+
+      onboardingGoal.innerHTML = "";
+      const goalOptions = [
+        { value: "balanced", label: t.objectiveBalanced },
+        { value: "hypertrophy", label: t.objectiveHypertrophy },
+        { value: "fatloss", label: t.objectiveFatloss },
+        { value: "endurance", label: t.objectiveEndurance }
+      ];
+      for (const optionData of goalOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        onboardingGoal.appendChild(option);
+      }
+
+      onboardingLevel.innerHTML = "";
+      const levelOptions = [
+        { value: "beginner", label: t.levelBeginner },
+        { value: "intermediate", label: t.levelIntermediate },
+        { value: "advanced", label: t.levelAdvanced }
+      ];
+      for (const optionData of levelOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        onboardingLevel.appendChild(option);
+      }
+
+      onboardingEquipment.innerHTML = "";
+      const equipmentOptions = [
+        { value: "gym", label: t.equipmentGym },
+        { value: "home", label: t.equipmentHome },
+        { value: "mixed", label: t.equipmentMixed }
+      ];
+      for (const optionData of equipmentOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        onboardingEquipment.appendChild(option);
+      }
+
+      onboardingSessions.innerHTML = "";
+      const sessionOptions = [
+        { value: "3", label: t.sessionsThree },
+        { value: "4", label: t.sessionsFour },
+        { value: "5", label: t.sessionsFive }
+      ];
+      for (const optionData of sessionOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        onboardingSessions.appendChild(option);
+      }
+
+      if (onboardingGoal.value === "") onboardingGoal.value = "balanced";
+      if (onboardingLevel.value === "") onboardingLevel.value = "intermediate";
+      if (onboardingEquipment.value === "") onboardingEquipment.value = "mixed";
+      if (onboardingSessions.value === "") onboardingSessions.value = "4";
+    }
+
+    function openOnboardingModal() {
+      updateOnboardingText(currentLanguage);
+      onboardingModal.classList.add("open");
+      onboardingModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeOnboardingModal() {
+      onboardingModal.classList.remove("open");
+      onboardingModal.setAttribute("aria-hidden", "true");
+      if (!previewModal.classList.contains("open") && !settingsOverlay.classList.contains("open")) {
+        document.body.classList.remove("modal-open");
+      }
+    }
+
+    function saveWorkoutGroups() {
+      localStorage.setItem("workout-groups-v1", JSON.stringify(workoutGroups));
+      localStorage.setItem("workout-active-group-v1", activeGroupId);
+    }
+
+    function ensureWorkoutGroups() {
+      const loaded = loadWorkoutGroups();
+      if (loaded.length) {
+        workoutGroups = loaded;
+      } else {
+        workoutGroups = [{
+          id: "base-group",
+          name: "Plano Base",
+          plan: clonePlan(basePlanData),
+          swapPolicy: "moderate",
+          equipmentProfile: "mixed",
+          levelProfile: "intermediate",
+          objectiveProfile: "balanced"
+        }];
+      }
+
+      const storedActiveId = localStorage.getItem("workout-active-group-v1");
+      activeGroupId = workoutGroups.some((group) => group.id === storedActiveId)
+        ? storedActiveId
+        : workoutGroups[0].id;
+      saveWorkoutGroups();
+    }
+
+    function getActiveGroup() {
+      return workoutGroups.find((group) => group.id === activeGroupId) || workoutGroups[0] || null;
+    }
+
+    function getActivePlan() {
+      const group = getActiveGroup();
+      return group ? group.plan : [];
+    }
+
+    function updateGroupSelect(language) {
+      const t = translations[language];
+      const activeGroup = getActiveGroup();
+      groupSelect.innerHTML = "";
+      for (const group of workoutGroups) {
+        const option = document.createElement("option");
+        option.value = group.id;
+        option.textContent = group.name;
+        if (group.id === activeGroupId) {
+          option.selected = true;
+        }
+        groupSelect.appendChild(option);
+      }
+
+      groupTitle.textContent = t.groupTitle;
+      groupSubtitle.textContent = t.groupSubtitle;
+      groupLabel.textContent = t.groupLabel;
+      groupSwapPolicyLabel.textContent = t.groupSwapPolicyLabel;
+      groupEquipmentLabel.textContent = t.groupEquipmentLabel;
+      groupLevelLabel.textContent = t.groupLevelLabel;
+      groupObjectiveLabel.textContent = t.groupObjectiveLabel;
+      newGroupBtn.textContent = t.groupNew;
+      duplicateGroupBtn.textContent = t.groupDuplicate;
+      deleteGroupBtn.textContent = t.groupDelete;
+
+      groupSwapPolicySelect.innerHTML = "";
+      const policyOptions = [
+        { value: "strict", label: t.swapPolicyStrict },
+        { value: "moderate", label: t.swapPolicyModerate },
+        { value: "flexible", label: t.swapPolicyFlexible }
+      ];
+
+      for (const optionData of policyOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        if (activeGroup && normalizeSwapPolicy(activeGroup.swapPolicy) === optionData.value) {
+          option.selected = true;
+        }
+        groupSwapPolicySelect.appendChild(option);
+      }
+
+      groupEquipmentSelect.innerHTML = "";
+      const equipmentOptions = [
+        { value: "gym", label: t.equipmentGym },
+        { value: "home", label: t.equipmentHome },
+        { value: "mixed", label: t.equipmentMixed }
+      ];
+
+      for (const optionData of equipmentOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        if (activeGroup && normalizeEquipmentProfile(activeGroup.equipmentProfile) === optionData.value) {
+          option.selected = true;
+        }
+        groupEquipmentSelect.appendChild(option);
+      }
+
+      groupLevelSelect.innerHTML = "";
+      const levelOptions = [
+        { value: "beginner", label: t.levelBeginner },
+        { value: "intermediate", label: t.levelIntermediate },
+        { value: "advanced", label: t.levelAdvanced }
+      ];
+
+      for (const optionData of levelOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        if (activeGroup && normalizeLevelProfile(activeGroup.levelProfile) === optionData.value) {
+          option.selected = true;
+        }
+        groupLevelSelect.appendChild(option);
+      }
+
+      groupObjectiveSelect.innerHTML = "";
+      const objectiveOptions = [
+        { value: "balanced", label: t.objectiveBalanced },
+        { value: "hypertrophy", label: t.objectiveHypertrophy },
+        { value: "fatloss", label: t.objectiveFatloss },
+        { value: "endurance", label: t.objectiveEndurance }
+      ];
+
+      for (const optionData of objectiveOptions) {
+        const option = document.createElement("option");
+        option.value = optionData.value;
+        option.textContent = optionData.label;
+        if (activeGroup && normalizeObjectiveProfile(activeGroup.objectiveProfile) === optionData.value) {
+          option.selected = true;
+        }
+        groupObjectiveSelect.appendChild(option);
+      }
+    }
+
+    function getGroupEfficiencySummary(plan, language) {
+      const t = translations[language];
+      const counts = { push: 0, pull: 0, legs: 0, cardio: 0 };
+      let totalExerciseItems = 0;
+      let repeatedFocusPenalty = 0;
+
+      for (let index = 0; index < plan.length; index += 1) {
+        const day = plan[index];
+        counts[day.focusKey] = (counts[day.focusKey] || 0) + 1;
+        if (Array.isArray(day.exercises)) {
+          totalExerciseItems += day.exercises.length;
+        }
+
+        const previousDay = plan[index - 1];
+        if (previousDay && previousDay.focusKey === day.focusKey && day.focusKey !== "cardio") {
+          repeatedFocusPenalty += 8;
+        }
+      }
+
+      let score = 100;
+      if (!counts.cardio) score -= 12;
+      if (!counts.push || !counts.pull || !counts.legs) score -= 18;
+      if (Math.abs(counts.push - counts.pull) > 1) score -= 8;
+      if (totalExerciseItems < 14) score -= 10;
+      if (totalExerciseItems > 34) score -= 10;
+      score -= repeatedFocusPenalty;
+      score = Math.max(0, Math.min(100, score));
+
+      if (score >= 85) {
+        return {
+          score,
+          label: t.groupEfficiencyExcellent,
+          hint: t.groupEfficiencyHintExcellent,
+          tone: "excellent"
+        };
+      }
+
+      if (score >= 70) {
+        return {
+          score,
+          label: t.groupEfficiencyGood,
+          hint: t.groupEfficiencyHintGood,
+          tone: "good"
+        };
+      }
+
+      return {
+        score,
+        label: t.groupEfficiencyAdjust,
+        hint: t.groupEfficiencyHintAdjust,
+        tone: "adjust"
+      };
+    }
+
+    function renderGroupEfficiency(language) {
+      const t = translations[language];
+      const activePlan = getActivePlan();
+      const summary = getGroupEfficiencySummary(activePlan, language);
+      groupEfficiency.dataset.tone = summary.tone;
+      groupEfficiency.textContent = `${t.groupEfficiencyLabel}: ${summary.score}/100 - ${summary.label}. ${summary.hint}`;
+    }
+
+    function createGroup(language) {
+      const t = translations[language];
+      const proposedName = prompt(t.groupPromptName, t.groupDefaultName);
+      const normalizedName = (proposedName || "").trim();
+      if (!normalizedName) {
+        return;
+      }
+
+      const newGroup = {
+        id: `group-${Date.now()}`,
+        name: normalizedName,
+        plan: clonePlan(basePlanData),
+        swapPolicy: "moderate",
+        equipmentProfile: "mixed",
+        levelProfile: "intermediate",
+        objectiveProfile: "balanced"
+      };
+
+      workoutGroups.push(newGroup);
+      activeGroupId = newGroup.id;
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    }
+
+    function duplicateGroup(language) {
+      const t = translations[language];
+      const currentGroup = getActiveGroup();
+      if (!currentGroup) {
+        return;
+      }
+
+      const defaultName = `${currentGroup.name} - ${t.groupDuplicateSuffix}`;
+      const proposedName = prompt(t.groupPromptName, defaultName);
+      const normalizedName = (proposedName || "").trim();
+      if (!normalizedName) {
+        return;
+      }
+
+      const clonedGroup = {
+        id: `group-${Date.now()}`,
+        name: normalizedName,
+        plan: clonePlan(currentGroup.plan),
+        swapPolicy: normalizeSwapPolicy(currentGroup.swapPolicy),
+        equipmentProfile: normalizeEquipmentProfile(currentGroup.equipmentProfile),
+        levelProfile: normalizeLevelProfile(currentGroup.levelProfile),
+        objectiveProfile: normalizeObjectiveProfile(currentGroup.objectiveProfile)
+      };
+
+      workoutGroups.push(clonedGroup);
+      activeGroupId = clonedGroup.id;
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    }
+
+    function deleteGroup(language) {
+      const t = translations[language];
+      if (workoutGroups.length <= 1) {
+        alert(t.groupDeleteBlocked);
+        return;
+      }
+
+      if (!confirm(t.groupDeleteConfirm)) {
+        return;
+      }
+
+      workoutGroups = workoutGroups.filter((group) => group.id !== activeGroupId);
+      activeGroupId = workoutGroups[0].id;
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    }
+
+    function clearDayManualState(dayKey) {
+      delete progressState[`day:${dayKey}`];
+    }
+
+    function moveExerciseChoiceBetweenDays(exerciseName, fromDayKey, toDayKey) {
+      const oldChoiceKey = getExerciseSlotKey(fromDayKey, exerciseName);
+      const variantName = exerciseChoices[oldChoiceKey];
+      delete exerciseChoices[oldChoiceKey];
+
+      if (!variantName) {
+        return;
+      }
+
+      const newChoiceKey = getExerciseSlotKey(toDayKey, exerciseName);
+      if (!exerciseChoices[newChoiceKey]) {
+        exerciseChoices[newChoiceKey] = variantName;
+      }
+    }
+
+    function clearProgressForMovedExercise(exerciseName, fromDayKey, toDayKey) {
+      const itemId = `exercise:${exerciseName}`;
+      delete progressState[getItemProgressKey(fromDayKey, itemId)];
+      delete progressState[getItemProgressKey(toDayKey, itemId)];
+      clearDayManualState(fromDayKey);
+      clearDayManualState(toDayKey);
+    }
+
+    function moveExerciseSlot(fromDayKey, toDayKey, oldIndex, newIndex) {
+      const group = getActiveGroup();
+      if (!group) {
+        return;
+      }
+
+      const fromDay = group.plan.find((day) => day.key === fromDayKey);
+      const toDay = group.plan.find((day) => day.key === toDayKey);
+      if (!fromDay || !toDay || !Array.isArray(fromDay.exercises) || !Array.isArray(toDay.exercises)) {
+        return;
+      }
+
+      const [movedExercise] = fromDay.exercises.splice(oldIndex, 1);
+      if (!movedExercise) {
+        return;
+      }
+
+      toDay.exercises.splice(newIndex, 0, movedExercise);
+
+      if (fromDayKey !== toDayKey) {
+        moveExerciseChoiceBetweenDays(movedExercise.name, fromDayKey, toDayKey);
+        clearProgressForMovedExercise(movedExercise.name, fromDayKey, toDayKey);
+      }
+
+      saveExerciseChoices(exerciseChoices);
+      saveWeekProgress();
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    }
+
+    function teardownSortables() {
+      for (const sortable of exerciseSortables) {
+        sortable.destroy();
+      }
+      exerciseSortables = [];
+    }
+
+    function initExerciseSortables() {
+      teardownSortables();
+      if (typeof Sortable === "undefined") {
+        return;
+      }
+
+      const grids = [...document.querySelectorAll(".exercise-grid")];
+      for (const grid of grids) {
+        const sortable = Sortable.create(grid, {
+          animation: 160,
+          group: "exercise-slots",
+          draggable: ".exercise",
+          handle: ".exercise-media",
+          ghostClass: "drag-ghost",
+          chosenClass: "drag-chosen",
+          dragClass: "drag-active",
+          onEnd: (event) => {
+            if (typeof event.oldIndex !== "number" || typeof event.newIndex !== "number") {
+              return;
+            }
+
+            const fromDayKey = event.from.dataset.dayKey;
+            const toDayKey = event.to.dataset.dayKey;
+            if (!fromDayKey || !toDayKey) {
+              return;
+            }
+
+            if (fromDayKey === toDayKey && event.oldIndex === event.newIndex) {
+              return;
+            }
+
+            moveExerciseSlot(fromDayKey, toDayKey, event.oldIndex, event.newIndex);
+          }
+        });
+
+        exerciseSortables.push(sortable);
+      }
+    }
 
     function loadExerciseChoices() {
       try {
@@ -586,12 +1808,76 @@
       return `${dayKey}:${baseExerciseName}`;
     }
 
-    function getExerciseOptions(baseExercise) {
-      return exerciseVariants[baseExercise.name] || [{ name: baseExercise.name, file: baseExercise.file }];
+    function getAllowedFamiliesForDay(dayKey) {
+      const day = getDayByKey(dayKey);
+      const activeGroup = getActiveGroup();
+      const policy = normalizeSwapPolicy(activeGroup ? activeGroup.swapPolicy : "moderate");
+      const focusKey = day ? day.focusKey : "push";
+      const allowed = swapPolicyRules[policy][focusKey] || swapPolicyRules.moderate[focusKey] || [];
+      return new Set(allowed);
+    }
+
+    function isVariantAllowedForDay(dayKey, exerciseName) {
+      const families = exerciseFamilies[exerciseName] || [];
+      const allowedFamilies = getAllowedFamiliesForDay(dayKey);
+      if (!families.length) {
+        return true;
+      }
+      return families.some((family) => allowedFamilies.has(family));
+    }
+
+    function isVariantAllowedByEquipment(exerciseName) {
+      const activeGroup = getActiveGroup();
+      const profile = normalizeEquipmentProfile(activeGroup ? activeGroup.equipmentProfile : "mixed");
+      if (profile === "mixed") {
+        return true;
+      }
+
+      const equipment = exerciseEquipment[exerciseName] || ["home", "gym"];
+      return equipment.includes(profile);
+    }
+
+    function isVariantAllowedByLevel(exerciseName) {
+      const activeGroup = getActiveGroup();
+      const targetLevel = normalizeLevelProfile(activeGroup ? activeGroup.levelProfile : "intermediate");
+      const maxRank = levelOrder[targetLevel] || levelOrder.intermediate;
+      const exerciseLevel = exerciseLevels[exerciseName] || "intermediate";
+      const exerciseRank = levelOrder[exerciseLevel] || levelOrder.intermediate;
+      return exerciseRank <= maxRank;
+    }
+
+    function isVariantAllowedByObjective(exerciseName) {
+      const activeGroup = getActiveGroup();
+      const objective = normalizeObjectiveProfile(activeGroup ? activeGroup.objectiveProfile : "balanced");
+      if (objective === "balanced") {
+        return true;
+      }
+
+      const tags = exerciseObjectives[exerciseName] || ["hypertrophy", "fatloss", "endurance"];
+      return tags.includes(objective);
+    }
+
+    function getExerciseOptions(dayKey, baseExercise) {
+      const options = exerciseVariants[baseExercise.name] || [{ name: baseExercise.name, file: baseExercise.file }];
+      const filtered = options.filter((option) => {
+        if (option.name === baseExercise.name) {
+          return true;
+        }
+        return isVariantAllowedForDay(dayKey, option.name)
+          && isVariantAllowedByEquipment(option.name)
+          && isVariantAllowedByLevel(option.name)
+          && isVariantAllowedByObjective(option.name);
+      });
+
+      if (!filtered.length) {
+        return [{ name: baseExercise.name, file: baseExercise.file }];
+      }
+
+      return filtered;
     }
 
     function resolveExerciseVariant(dayKey, baseExercise) {
-      const options = getExerciseOptions(baseExercise);
+      const options = getExerciseOptions(dayKey, baseExercise);
       const slotKey = getExerciseSlotKey(dayKey, baseExercise.name);
       const storedChoice = exerciseChoices[slotKey];
       const found = options.find((option) => option.name === storedChoice);
@@ -677,7 +1963,8 @@
     }
 
     function getDayByKey(dayKey) {
-      return planData.find((day) => day.key === dayKey) || null;
+      const plan = getActivePlan();
+      return plan.find((day) => day.key === dayKey) || null;
     }
 
     function getDayItemIds(day) {
@@ -902,7 +2189,23 @@
       previewModal.classList.remove("open");
       previewModal.setAttribute("aria-hidden", "true");
       previewImage.src = "";
-      document.body.classList.remove("modal-open");
+      if (!onboardingModal.classList.contains("open")) {
+        document.body.classList.remove("modal-open");
+      }
+    }
+
+    function openSettingsPanel() {
+      settingsOverlay.classList.add("open");
+      settingsOverlay.setAttribute("aria-hidden", "false");
+      openSettingsBtn.setAttribute("aria-expanded", "true");
+      document.body.classList.add("settings-open");
+    }
+
+    function closeSettingsPanel() {
+      settingsOverlay.classList.remove("open");
+      settingsOverlay.setAttribute("aria-hidden", "true");
+      openSettingsBtn.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("settings-open");
     }
 
     function renderPlan(language) {
@@ -916,14 +2219,20 @@
       document.getElementById("appSubtitle").textContent = t.subtitle;
       document.getElementById("languageLabel").textContent = t.languageLabel;
       document.getElementById("themeLabel").textContent = t.themeLabel;
+      openSettingsLabel.textContent = t.menuLabel;
+      settingsTitle.textContent = t.settingsTitle;
+      closeSettingsLabel.textContent = t.settingsClose;
       document.getElementById("footerLine1").textContent = t.footerLine1;
       document.getElementById("footerCredit").textContent = t.footerCredit;
       closePreviewBtn.textContent = t.closeLabel;
       previewHint.textContent = t.previewHint;
+      updateOnboardingText(language);
       renderProgress(language);
       applyTheme(currentTheme);
+      updateGroupSelect(language);
+      renderGroupEfficiency(language);
 
-      for (const day of planData) {
+      for (const day of getActivePlan()) {
         const dayCard = document.createElement("section");
         dayCard.className = "day-card";
         dayCard.dataset.kind = day.kind;
@@ -971,12 +2280,13 @@
         if (day.exercises) {
           const grid = document.createElement("div");
           grid.className = "exercise-grid";
+          grid.dataset.dayKey = day.key;
 
           for (const exercise of day.exercises) {
             const itemId = `exercise:${exercise.name}`;
             const done = isItemDone(day.key, itemId);
             const selectedVariant = resolveExerciseVariant(day.key, exercise);
-            const variantOptions = getExerciseOptions(exercise);
+            const variantOptions = getExerciseOptions(day.key, exercise);
             const optionMarkup = variantOptions
               .map((option) => {
                 const optionLabel = t.exercises[option.name] || option.name;
@@ -986,6 +2296,7 @@
               .join("");
             const card = document.createElement("article");
             card.className = `exercise ${done ? "is-complete" : ""}`;
+            card.dataset.exerciseName = exercise.name;
             card.tabIndex = 0;
             card.setAttribute("role", "button");
             card.setAttribute("aria-label", `${t.exercises[selectedVariant.name] || selectedVariant.name} - ${exercise.sets}`);
@@ -1093,6 +2404,7 @@
       }
 
       setActiveButton(languageButtons, language, "data-lang");
+      initExerciseSortables();
     }
 
     function showFallback(img) {
@@ -1115,6 +2427,95 @@
       applyTheme(currentTheme === "dark" ? "light" : "dark");
     });
 
+    openSettingsBtn.addEventListener("click", () => {
+      if (onboardingModal.classList.contains("open")) {
+        return;
+      }
+      openSettingsPanel();
+    });
+
+    closeSettingsBtn.addEventListener("click", () => {
+      closeSettingsPanel();
+    });
+
+    settingsOverlay.addEventListener("click", (event) => {
+      if (event.target === settingsOverlay) {
+        closeSettingsPanel();
+      }
+    });
+
+    groupSelect.addEventListener("change", () => {
+      activeGroupId = groupSelect.value;
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    });
+
+    groupSwapPolicySelect.addEventListener("change", () => {
+      const activeGroup = getActiveGroup();
+      if (!activeGroup) {
+        return;
+      }
+      activeGroup.swapPolicy = normalizeSwapPolicy(groupSwapPolicySelect.value);
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    });
+
+    groupEquipmentSelect.addEventListener("change", () => {
+      const activeGroup = getActiveGroup();
+      if (!activeGroup) {
+        return;
+      }
+      activeGroup.equipmentProfile = normalizeEquipmentProfile(groupEquipmentSelect.value);
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    });
+
+    groupLevelSelect.addEventListener("change", () => {
+      const activeGroup = getActiveGroup();
+      if (!activeGroup) {
+        return;
+      }
+      activeGroup.levelProfile = normalizeLevelProfile(groupLevelSelect.value);
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    });
+
+    groupObjectiveSelect.addEventListener("change", () => {
+      const activeGroup = getActiveGroup();
+      if (!activeGroup) {
+        return;
+      }
+      activeGroup.objectiveProfile = normalizeObjectiveProfile(groupObjectiveSelect.value);
+      saveWorkoutGroups();
+      renderPlan(currentLanguage);
+    });
+
+    onboardingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const profile = {
+        name: onboardingName.value.trim(),
+        objectiveProfile: onboardingGoal.value,
+        levelProfile: onboardingLevel.value,
+        equipmentProfile: onboardingEquipment.value,
+        sessionsWeekly: onboardingSessions.value
+      };
+      applyOnboardingProfile(profile);
+      closeOnboardingModal();
+      renderPlan(currentLanguage);
+    });
+
+    newGroupBtn.addEventListener("click", () => {
+      createGroup(currentLanguage);
+    });
+
+    duplicateGroupBtn.addEventListener("click", () => {
+      duplicateGroup(currentLanguage);
+    });
+
+    deleteGroupBtn.addEventListener("click", () => {
+      deleteGroup(currentLanguage);
+    });
+
     closePreviewBtn.addEventListener("click", closePreview);
 
     resetWeekBtn.addEventListener("click", () => {
@@ -1135,6 +2536,11 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && previewModal.classList.contains("open")) {
         closePreview();
+        return;
+      }
+
+      if (event.key === "Escape" && settingsOverlay.classList.contains("open")) {
+        closeSettingsPanel();
       }
     });
 
@@ -1149,9 +2555,15 @@
     progressState = loadWeekProgress();
     exerciseChoices = loadExerciseChoices();
     collapsedDays = loadCollapsedDays();
+    ensureWorkoutGroups();
+    onboardingProfile = loadOnboardingProfile();
 
     applyTheme(initialTheme);
     renderPlan(initialLanguage);
+
+    if (!onboardingProfile) {
+      openOnboardingModal();
+    }
   </script>
 </body>
 </html>
