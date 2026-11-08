@@ -10,7 +10,7 @@ import shutil
 import time
 import urllib.request
 
-OUTPUT_DIR = "gifs"
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "gifs")
 BASE_FP = "https://fitnessprogramer.com/wp-content/uploads"
 BASE_WTG = "https://weighttraining.guide/wp-content/uploads"
 

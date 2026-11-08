@@ -1,39 +1,55 @@
 {
   "name": "app-academia",
-  "version": "1.4.0",
-  "description": "Responsive HTML workout plan with animated exercise GIFs.",
-  "main": "index.js",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Planejador de treino semanal com GIFs dos exercícios",
   "scripts": {
-    "build:web": "rm -rf www && mkdir -p www && cp index.html www/index.html && cp styles.css www/styles.css && cp -R gifs www/gifs",
-    "cap:sync": "npm run build:web && npx cap sync android",
-    "cap:open": "npx cap open android",
-    "android:gradle:debug": "./scripts/run-gradle.sh assembleDebug",
-    "android:gradle:release": "./scripts/run-gradle.sh assembleRelease",
-    "apk:debug": "npm run build:web && npx cap sync android && npm run android:gradle:debug",
-    "apk:release": "npm run build:web && npx cap sync android && npm run android:gradle:release",
-    "apk:release:v1.1": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.1-release.apk",
-    "apk:release:v1.2": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.2-release.apk",
-    "apk:release:v1.3": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.3-release.apk",
-    "apk:release:v1.4": "npm run apk:release && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v1.4-release.apk",
-    "apk:commit": "npm run apk:debug && mkdir -p release && cp android/app/build/outputs/apk/debug/app-debug.apk release/App-Academia-V1-debug.apk",
-    "test": "echo \"No tests configured\""
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:pages": "tsc -b && vite build --base=/app-academia/",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "icons": "python3 scripts/gerar_icones.py",
+    "cap:sync": "npm run build && cap sync android",
+    "cap:open": "cap open android",
+    "apk:debug": "npm run cap:sync && ./scripts/run-gradle.sh assembleDebug",
+    "apk:release": "npm run cap:sync && ./scripts/run-gradle.sh assembleRelease && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/App-Academia-v$npm_package_version-release.apk"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Gabriel3510/app-academia.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Gabriel Barbosa Lima",
+    "email": "78989155+Gabriel3510@users.noreply.github.com"
+  },
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Gabriel3510/app-academia/issues"
-  },
   "homepage": "https://github.com/Gabriel3510/app-academia#readme",
-  "dependencies": {
-    "@capacitor/android": "^6.2.1",
-    "@capacitor/core": "^6.2.1"
-  },
   "devDependencies": {
-    "@capacitor/cli": "^6.2.1"
+    "@capacitor/android": "^6.2.3",
+    "@capacitor/cli": "^6.2.3",
+    "@capacitor/core": "^6.2.3",
+    "@capacitor/filesystem": "^6.0.4",
+    "@capacitor/share": "^6.0.4",
+    "@capacitor/status-bar": "^6.0.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "autoprefixer": "^10.6.2",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.14.0",
+    "lucide-react": "^1.70.0",
+    "postcss": "^8.5.32",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.6"
   }
 }

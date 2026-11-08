@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --canvas: 245 246 248;
+    --surface: 255 255 255;
+    --surface-2: 241 243 246;
+    --line: 226 229 235;
+    --ink: 17 20 28;
+    --muted: 75 82 99;
+    --subtle: 107 114 132;
+    --primary: 255 106 26;
+    --primary-hover: 240 90 10;
+    --primary-soft: 255 237 224;
+    --on-primary: 31 14 0;
+    --accent: 194 65 12;
+    --hero: 24 26 34;
+    --on-hero: 255 255 255;
+    --success: 21 128 61;
+    --success-soft: 220 252 231;
+    --danger: 220 38 38;
+    --danger-soft: 254 226 226;
+    --warning: 180 83 9;
+    --warning-soft: 254 243 199;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --canvas: 13 15 20;
+    --surface: 22 25 33;
+    --surface-2: 31 35 46;
+    --line: 45 50 64;
+    --ink: 236 238 243;
+    --muted: 170 177 194;
+    --subtle: 133 141 160;
+    --primary: 255 122 46;
+    --primary-hover: 255 145 77;
+    --primary-soft: 61 32 15;
+    --on-primary: 31 14 0;
+    --accent: 255 145 77;
+    --hero: 27 30 40;
+    --on-hero: 255 255 255;
+    --success: 74 222 128;
+    --success-soft: 20 50 33;
+    --danger: 248 113 113;
+    --danger-soft: 60 25 28;
+    --warning: 251 191 36;
+    --warning-soft: 58 44 16;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+    overflow-x: hidden;
+  }
+
+  button {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+  }
+
+  /* iOS Safari zooms the page when a focused field is smaller than 16px */
+  @media (max-width: 767px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-line rounded-2xl shadow-sm;
+  }
+
+  .input {
+    @apply w-full min-w-0 bg-surface text-ink border border-line rounded-xl px-3 py-2.5 text-sm placeholder:text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+
+  .field-label {
+    @apply block text-xs font-medium text-muted mb-1.5;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wide text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 min-h-[42px] px-4 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-on-primary font-semibold hover:bg-primary-hover;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface border border-line text-ink hover:bg-surface-2;
+  }
+
+  .btn-danger {
+    @apply btn bg-danger text-white hover:opacity-90 dark:text-canvas;
+  }
+
+  .hero-btn {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-xl text-on-hero hover:bg-white/10 transition-colors;
+  }
+
+  .icon-btn {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-xl text-muted hover:bg-surface-2 hover:text-ink transition-colors disabled:opacity-40;
+  }
+}
+
+@layer utilities {
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottom-above-nav {
+    bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.animate-rise {
+  animation: rise-in 0.2s ease-out;
+}
+
+.animate-pop {
+  animation: pop 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise, .animate-pop { animation: none; }
+  * { transition: none !important; }
+}
